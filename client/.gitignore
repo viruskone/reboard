@@ -33,10 +33,6 @@ dist
 .idea
 *.iml
 
-#VSCode metadata
-.vscode
-
 # Mac files
 .DS_Store
 
-.ionide
