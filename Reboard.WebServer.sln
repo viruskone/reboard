@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reboard.CQRS", "cqrs\Reboar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reboard.Repository", "repository\Reboard.Repository.csproj", "{4120C41A-DB82-4EFB-831D-5C3F891969D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reboard.App.Reports", "app\reports\Reboard.App.Reports.csproj", "{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,5 +74,19 @@ Global
 		{4120C41A-DB82-4EFB-831D-5C3F891969D7}.Release|x64.Build.0 = Release|Any CPU
 		{4120C41A-DB82-4EFB-831D-5C3F891969D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{4120C41A-DB82-4EFB-831D-5C3F891969D7}.Release|x86.Build.0 = Release|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Debug|x64.Build.0 = Debug|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Debug|x86.Build.0 = Debug|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Release|x64.ActiveCfg = Release|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Release|x64.Build.0 = Release|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Release|x86.ActiveCfg = Release|Any CPU
+		{DB7DC8F7-8CEB-4A7E-85ED-060E7711ACDB}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 EndGlobal

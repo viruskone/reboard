@@ -9,7 +9,6 @@ using Reboard.WebServer.Options;
 using Reboard.CQRS;
 using Microsoft.Extensions.Hosting;
 using Reboard.Repository;
-using MongoDB.Driver;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
 
@@ -28,7 +27,7 @@ namespace Reboard.WebServer
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddCqrs(typeof(Startup).Assembly)
+                .AddCqrs(typeof(App.Reports.Register).Assembly)
                 .AddCors()
                 .AddControllers();
 

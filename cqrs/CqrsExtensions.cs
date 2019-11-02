@@ -9,13 +9,13 @@ namespace Reboard.CQRS
     {
 
         public static IServiceCollection AddCqrs(this IServiceCollection services, Assembly forAssembly)
-        {
-            services.AddCommandQueryHandlers(forAssembly, typeof(ICommandHandler<>));
-            services.AddCommandQueryHandlers(forAssembly, typeof(IQueryHandler<,>));
-            return services;
-        }
+            => services
+                .AddSingleton<IQueryDispatcher, DefaultQueryDispatcher>()
+                .AddSingleton<ICommandDispatcher, DefaultCommandDispatcher>()
+                .AddCommandQueryHandlers(forAssembly, typeof(ICommandHandler<>))
+                .AddCommandQueryHandlers(forAssembly, typeof(IQueryHandler<,>));
 
-        private static void AddCommandQueryHandlers(this IServiceCollection services, Assembly assembly, Type handlerInterface)
+        private static IServiceCollection AddCommandQueryHandlers(this IServiceCollection services, Assembly assembly, Type handlerInterface)
         {
             var handlers = assembly.GetTypes()
                 .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface)
@@ -23,8 +23,10 @@ namespace Reboard.CQRS
 
             foreach (var handler in handlers)
             {
-                services.AddScoped(handler.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface), handler);
+                var service = handler.GetInterfaces().First(i => i.IsGenericType && i.GetGenericTypeDefinition() == handlerInterface);
+                services.AddTransient(service, handler);
             }
+            return services;
         }
 
     }

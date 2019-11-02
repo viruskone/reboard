@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Reboard.CQRS
 {
@@ -14,7 +15,7 @@ namespace Reboard.CQRS
 
         public async Task<TResult> HandleAsync<TQuery, TResult>(TQuery query) where TQuery : IQuery<TResult>
         {
-            var handler = _services.GetService(typeof(IQueryHandler<TQuery, TResult>)) as IQueryHandler<TQuery, TResult>;
+            var handler = _services.GetRequiredService<IQueryHandler<TQuery, TResult>>();
             return await handler.HandleAsync(query);
         }
     }
