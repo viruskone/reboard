@@ -30,7 +30,7 @@ const jsxReportCard = report => (
   </Grid>
 );
 
-function ReportsList(props) {
+function Reports(props) {
 
   const { reports } = props
 
@@ -44,8 +44,8 @@ function ReportsList(props) {
   );
 }
 
-ReportsList.propTypes = {
+Reports.propTypes = {
   reports: PropTypes.array.isRequired,
 }
 
-export default ReportsList
+export default Reports

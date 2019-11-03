@@ -7,5 +7,5 @@ const store = configureStore();
 
 render(
   <Root store={store} history={history} />,
-  document.getElementById("app")
+    document.getElementById("app")
 );

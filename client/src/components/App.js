@@ -1,12 +1,12 @@
 import React from "react";
 import TopBar from "./TopBar";
-import Reports from "./containers/Reports";
+import ReportsPage from "./containers/ReportsPage";
 
 function App() {
   return (
     <React.Fragment>
       <TopBar />
-      <Reports />
+      <ReportsPage />
     </React.Fragment>
   );
 }
