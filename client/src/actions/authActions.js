@@ -1,4 +1,5 @@
 import * as types from "../constants/actions";
+import { setAuthenticationToken } from "../services/authService";
 
 export function login(login, password) {
     return function(dispatch) {
@@ -11,11 +12,12 @@ export function login(login, password) {
         }
       })
         .then(response => response.json())
-        .then(response =>
+        .then(response => {
+          setAuthenticationToken(response.token)
           dispatch({
             type: types.LOGIN_SUCCESS,
-            payload: response
-          })
+            payload: { status: true }
+          })}
         )
         .catch(err =>
           dispatch({
