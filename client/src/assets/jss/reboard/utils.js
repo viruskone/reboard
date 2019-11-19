@@ -1,0 +1,1 @@
+export const padding = (themeSpacing, topBottom, leftRight) => `${themeSpacing(topBottom)}px ${themeSpacing(leftRight)}px`

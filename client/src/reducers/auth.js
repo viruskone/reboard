@@ -8,7 +8,7 @@ export default function reportsReducer(state = initialState.auth, action) {
             return Object.assign({}, state, { isAuthenticated: isAuthenticated() })
         case actions.LOGIN_SUCCESS:
             return Object.assign({}, state, {
-                isAuthenticated: action.status
+                isAuthenticated: action.payload.status
             });
         default:
         return state;

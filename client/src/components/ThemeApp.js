@@ -3,7 +3,6 @@ import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme } from "@material-ui/core/styles";
 import shadows from "../utils/shadows";
 import App from "./App";
-import "./app.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -38,7 +37,6 @@ const theme = createMuiTheme({
   overrides: {
   }
 });
-window.theme = theme;
 export default function ThemeApp() {
   return (
     <ThemeProvider theme={theme}>
