@@ -1,8 +1,0 @@
-/home/virus/source/reboard/identity/bin/Debug/netstandard2.1/Reboard.Identity.deps.json
-/home/virus/source/reboard/identity/bin/Debug/netstandard2.1/Reboard.Identity.dll
-/home/virus/source/reboard/identity/bin/Debug/netstandard2.1/Reboard.Identity.pdb
-/home/virus/source/reboard/identity/obj/Debug/netstandard2.1/Reboard.Identity.csprojAssemblyReference.cache
-/home/virus/source/reboard/identity/obj/Debug/netstandard2.1/Reboard.Identity.AssemblyInfoInputs.cache
-/home/virus/source/reboard/identity/obj/Debug/netstandard2.1/Reboard.Identity.AssemblyInfo.cs
-/home/virus/source/reboard/identity/obj/Debug/netstandard2.1/Reboard.Identity.dll
-/home/virus/source/reboard/identity/obj/Debug/netstandard2.1/Reboard.Identity.pdb
