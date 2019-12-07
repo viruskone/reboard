@@ -11,6 +11,11 @@ using Microsoft.Extensions.Hosting;
 using Reboard.Repository;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
+using Reboard.Repository.Mongo;
+using Reboard.Repository.Reports.Mongo;
+using Reboard.App.Users.Services;
+using Reboard.Repository.Users.Mongo;
+using Reboard.Identity;
 
 namespace Reboard.WebServer
 {
@@ -28,6 +33,7 @@ namespace Reboard.WebServer
         {
             services
                 .AddCqrs(typeof(App.Reports.Register).Assembly)
+                .AddCqrs(typeof(App.Users.Register).Assembly)
                 .AddCors()
                 .AddControllers();
 
@@ -54,8 +60,11 @@ namespace Reboard.WebServer
                     ValidateAudience = false
                 };
             });
-            services.AddSingleton<MongoConnection>(_ => new MongoConnection(Configuration.GetValue("MongoConnection", "")));
+            services.AddSingleton<MongoConnection>(_ => new MongoConnection(Configuration.GetValue("MongoConnection", ""), "reboard"));
             services.AddTransient<IRepository<Report>, MongoReportsRepository>();
+            services.AddTransient<IUserRepository, MongoUserRepository>();
+            services.AddTransient<IUserService, RepositoryUserService>();
+            services.AddSingleton<IHashService, Sha256HashService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

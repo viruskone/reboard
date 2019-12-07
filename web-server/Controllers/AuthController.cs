@@ -23,7 +23,7 @@ namespace Reboard.WebServer.Controllers
             _secretKey = appSettings.Value.Secret;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<ActionResult<AuthenticationResult>> Login(AuthenticationRequest request)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -46,7 +46,6 @@ namespace Reboard.WebServer.Controllers
                 Token = tokenString
             });
         }
-
 
     }
 }
