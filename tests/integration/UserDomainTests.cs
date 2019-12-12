@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AspNetCore.Http.Extensions;
+using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Reboard.Domain.Users;
 using Reboard.WebServer;
@@ -19,11 +20,17 @@ namespace Reboard.IntegrationTests
         }
 
         [Fact]
-        public async Task Test1()
+        public async Task create_user()
         {
+            var email = "example@domain.com";
             var client = _factory.CreateClient();
-            var response = await client.PostAsJsonAsync<CreateUserRequest>("api/user", new CreateUserRequest { Email = "example@domain.com", Password = "123" });
+            var response = await client.PostAsJsonAsync<CreateUserRequest>("api/user", new CreateUserRequest { Email = email, Password = "123" });
             response.EnsureSuccessStatusCode();
+
+            var result = await client.GetAsync($"/api/user/{email}");
+            result.EnsureSuccessStatusCode();
+            var user = await result.Content.ReadAsJsonAsync<User>();
+            user.Email.Should().Be(email);
         }
     }
 }

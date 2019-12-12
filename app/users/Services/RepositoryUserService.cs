@@ -30,10 +30,8 @@ namespace Reboard.App.Users.Services
             }
         }
 
-        public Task<User> Get(string email)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<User> Get(string email)
+            => await _repository.Get(email);
 
         public async Task SetPassword(string email, string hashedPassword)
         {
