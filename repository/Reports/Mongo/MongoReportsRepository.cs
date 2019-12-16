@@ -1,18 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
 using Reboard.Repository.Mongo;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reboard.Repository.Reports.Mongo
 {
     public class MongoReportsRepository : IRepository<Report>
     {
-
         private readonly IMongoCollection<ReportMongoDto> _collection;
 
         public MongoReportsRepository(MongoConnection connection)
@@ -47,6 +45,5 @@ namespace Reboard.Repository.Reports.Mongo
 
         private FilterDefinition<ReportMongoDto> GetFilterById(string id)
             => new FilterDefinitionBuilder<ReportMongoDto>().Eq(dto => dto.Id, new ObjectId(id));
-
     }
 }

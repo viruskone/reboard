@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using Reboard.App.Users.Services;
 using Reboard.CQRS;
 using Reboard.Domain.Users;
 using Reboard.Domain.Users.Commands;
 using Reboard.Identity;
+using System.Threading.Tasks;
 
 namespace Reboard.App.Users.CommandHandlers
 {

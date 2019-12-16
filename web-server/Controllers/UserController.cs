@@ -1,12 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Reboard.App.Users.Services;
 using Reboard.CQRS;
 using Reboard.Domain.Users;
 using Reboard.Domain.Users.Commands;
 using Reboard.Domain.Users.Queries;
-using Reboard.Identity;
+using Reboard.WebServer.Architecture;
+using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
 {
@@ -14,10 +12,10 @@ namespace Reboard.WebServer.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly ICommandDispatcher _dispatcher;
+        private readonly IQueueCommandDispatcher _dispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
-        public UserController(ICommandDispatcher dispatcher, IQueryDispatcher queryDispatcher)
+        public UserController(IQueueCommandDispatcher dispatcher, IQueryDispatcher queryDispatcher)
         {
             _dispatcher = dispatcher;
             _queryDispatcher = queryDispatcher;
@@ -28,11 +26,11 @@ namespace Reboard.WebServer.Controllers
             => Ok(await _queryDispatcher.HandleAsync<UserQuery, User>(new UserQuery { Email = email }));
 
         [HttpPost]
-        public async Task<CreatedAtActionResult> Create(CreateUserRequest request)
+        public async Task<IActionResult> Create(CreateUserRequest request)
         {
-            await _dispatcher.HandleAsync(new CreateUserCommand { Request = request });
-            return CreatedAtAction(nameof(GetUser), null);
+            var job = await _dispatcher.HandleAsync(new CreateUserCommand { Request = request });
+            job.RegisterResourceUrl(Url.Action(nameof(GetUser), new { email = request.Email }));
+            return this.AcceptedAtTask(job.Id);
         }
-
     }
 }

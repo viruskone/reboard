@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Reboard.App.Users
+﻿namespace Reboard.App.Users
 {
     public static class Register { }
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Reboard.Domain.Users
 {
     public class CreateUserRequest

@@ -1,8 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using Reboard.Domain.Users;
 using Reboard.Repository;
 using Reboard.Repository.Exceptions;
+using System.Threading.Tasks;
 
 namespace Reboard.App.Users.Services
 {
@@ -41,6 +40,12 @@ namespace Reboard.App.Users.Services
                 user.Password = hashedPassword;
                 await _repository.Update(user);
             }
+        }
+
+        public async Task<bool> Validate(string email, string hashedPassword)
+        {
+            var user = await _repository.Get(email);
+            return user.Password.Equals(hashedPassword);
         }
     }
 }

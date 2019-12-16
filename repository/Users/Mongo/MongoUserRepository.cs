@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MongoDB.Driver;
 using Reboard.Domain.Users;
 using Reboard.Repository.Exceptions;
 using Reboard.Repository.Mongo;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Reboard.Repository.Users.Mongo
 {
-
     public class MongoUserRepository : IUserRepository
     {
-
         private readonly IMongoCollection<UserMongoDto> _collection;
 
         public MongoUserRepository(MongoConnection connection)

@@ -5,7 +5,6 @@ namespace Reboard.Domain.Users
 {
     public class UserException : Exception
     {
-
         public enum ErrorType
         {
             UserAlreadyExist
@@ -29,6 +28,5 @@ namespace Reboard.Domain.Users
                     ErrorMessages[type].Replace("{userId}", userId) :
                     $"User domain error({type}), user: {userId}";
         }
-
     }
 }

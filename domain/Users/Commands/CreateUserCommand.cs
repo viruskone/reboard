@@ -1,4 +1,3 @@
-using System;
 using Reboard.CQRS;
 
 namespace Reboard.Domain.Users.Commands

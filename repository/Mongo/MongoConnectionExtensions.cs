@@ -11,5 +11,4 @@ namespace Reboard.Repository.Mongo
             return database.GetCollection<T>(collectionName);
         }
     }
-
 }

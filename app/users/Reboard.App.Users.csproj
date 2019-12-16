@@ -1,6 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\cqrs\Reboard.CQRS.csproj" />
     <ProjectReference Include="..\..\domain\Reboard.Domain.csproj" />
     <ProjectReference Include="..\..\repository\Reboard.Repository.csproj" />

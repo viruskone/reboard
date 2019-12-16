@@ -1,6 +1,6 @@
-using System;
 using MongoDB.Bson;
 using Reboard.Domain.Reports;
+using System;
 
 namespace Reboard.Repository.Reports.Mongo
 {
@@ -36,5 +36,4 @@ namespace Reboard.Repository.Reports.Mongo
             return dto;
         }
     }
-
 }

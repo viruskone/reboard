@@ -1,12 +1,11 @@
-using System.Threading.Tasks;
 using Reboard.App.Users.Services;
 using Reboard.CQRS;
 using Reboard.Domain.Users;
 using Reboard.Domain.Users.Queries;
+using System.Threading.Tasks;
 
 namespace Reboard.App.Users.QueryHandlers
 {
-
     public class UserQueryHandler : IQueryHandler<UserQuery, User>
     {
         private readonly IUserService _service;

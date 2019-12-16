@@ -1,4 +1,3 @@
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Reboard.Repository.Users.Mongo
@@ -7,6 +6,7 @@ namespace Reboard.Repository.Users.Mongo
     {
         [BsonId]
         public string Email { get; set; }
+
         public string Password { get; set; }
     }
 }

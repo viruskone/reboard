@@ -17,6 +17,5 @@ namespace Reboard.Repository.Users.Mongo
             Email = dto.Email,
             Password = dto.Password
         };
-
     }
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Reboard.Repository.Mongo
 {
     public class MongoConnection
@@ -13,5 +11,4 @@ namespace Reboard.Repository.Mongo
             Database = database;
         }
     }
-
 }

@@ -1,6 +1,6 @@
-using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace Reboard.Repository.Reports.Mongo
 {
@@ -8,13 +8,15 @@ namespace Reboard.Repository.Reports.Mongo
     {
         [BsonId]
         public ObjectId Id { get; set; }
+
         public string Title { get; set; }
         public string Description { get; set; }
+
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CreateTime { get; set; }
+
         public int Downloads { get; set; }
         public TimeSpan AverageDuration { get; set; }
         public double Rating { get; set; }
     }
-
 }

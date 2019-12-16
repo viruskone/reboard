@@ -11,7 +11,5 @@ namespace Reboard.Domain.Reports
         public int Downloads { get; set; }
         public TimeSpan AverageDuration { get; set; }
         public double Rating { get; set; }
-
     }
-
 }

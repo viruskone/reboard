@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reboard.CQRS;
 using Reboard.Domain.Reports;
 using Reboard.Domain.Reports.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
 {
@@ -25,6 +23,5 @@ namespace Reboard.WebServer.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Report>>> Get()
             => Ok(await _queryGate.HandleAsync<ReportsQuery, IEnumerable<Report>>(new ReportsQuery()));
-
     }
 }

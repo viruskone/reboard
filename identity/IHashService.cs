@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Reboard.Identity
+﻿namespace Reboard.Identity
 {
     public interface IHashService
     {

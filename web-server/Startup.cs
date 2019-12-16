@@ -1,21 +1,22 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Reboard.WebServer.Options;
-using Reboard.CQRS;
 using Microsoft.Extensions.Hosting;
-using Reboard.Repository;
+using Microsoft.IdentityModel.Tokens;
+using Reboard.App.Users.Services;
+using Reboard.CQRS;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
+using Reboard.Identity;
+using Reboard.Repository;
+using Reboard.Repository.Auth.Mongo;
 using Reboard.Repository.Mongo;
 using Reboard.Repository.Reports.Mongo;
-using Reboard.App.Users.Services;
 using Reboard.Repository.Users.Mongo;
-using Reboard.Identity;
+using Reboard.WebServer.Options;
+using System.Text;
 
 namespace Reboard.WebServer
 {
@@ -60,11 +61,14 @@ namespace Reboard.WebServer
                     ValidateAudience = false
                 };
             });
-            services.AddSingleton<MongoConnection>(_ => new MongoConnection(Configuration.GetValue("MongoConnection", ""), "reboard"));
+            services.AddSingleton(_ => new MongoConnection(Configuration.GetValue("MongoConnection", ""), "reboard"));
             services.AddTransient<IRepository<Report>, MongoReportsRepository>();
             services.AddTransient<IUserRepository, MongoUserRepository>();
+            services.AddTransient<IAuthRepository, MongoAuthRepository>();
             services.AddTransient<IUserService, RepositoryUserService>();
+            services.AddTransient<IAuthService, RepositoryAuthService>();
             services.AddSingleton<IHashService, Sha256HashService>();
+            services.AddSingleton<ITokenFactory>(_ => new JwtTokenFactory(appSettings.Secret));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
