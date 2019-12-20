@@ -8,6 +8,7 @@ namespace Reboard.Repository.Mongo
 {
     internal static class MongoCollectionExtensions
     {
+
         internal static async Task<IAsyncCursor<T>> FindAsyncById<T>(this IMongoCollection<T> collection, string id) where T : IBsonIdDto
             => await collection.FindAsync(GetFilterById<T>(id));
 

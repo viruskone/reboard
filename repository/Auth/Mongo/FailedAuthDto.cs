@@ -5,10 +5,10 @@ using System;
 
 namespace Reboard.Repository.Auth.Mongo
 {
-    public class FailedAuthDto
+    public class FailedAuthDto : IBsonIdDto
     {
         [BsonId]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
 
         public string User { get; set; }
 

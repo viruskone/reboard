@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using Reboard.Repository.Mongo;
 using System;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace Reboard.Repository.Auth.Mongo
 
         public MongoAuthRepository(MongoConnection connection)
         {
-            _failedAuthCollection = connection.GetCollection<FailedAuthDto>("failed_auths");
+            _failedAuthCollection = connection.GetCollection<FailedAuthDto>();
         }
 
         public async Task<Domain.Auth.Auth> Create(Domain.Auth.Auth newEntity)

@@ -15,7 +15,7 @@ namespace Reboard.Repository.Reports.Mongo
 
         public MongoReportsRepository(MongoConnection connection)
         {
-            _collection = connection.GetCollection<ReportMongoDto>("reports");
+            _collection = connection.GetCollection<ReportMongoDto>();
         }
 
         public async Task<Report> Create(Report newEntity)

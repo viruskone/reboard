@@ -14,7 +14,7 @@ namespace Reboard.Repository.Users.Mongo
 
         public MongoUserRepository(MongoConnection connection)
         {
-            _collection = connection.GetCollection<UserMongoDto>("users");
+            _collection = connection.GetCollection<UserMongoDto>();
         }
 
         public async Task<User> Create(User newEntity)

@@ -8,7 +8,7 @@ namespace Reboard.Repository.Auth.Mongo
         internal static FailedAuthDto ToFailedDto(this Domain.Auth.Auth auth)
             => new FailedAuthDto
             {
-                Id = auth.RequestId,
+                Id = new ObjectId(auth.RequestId),
                 User = auth.User,
                 CreateTime = auth.Time
             };
@@ -18,7 +18,7 @@ namespace Reboard.Repository.Auth.Mongo
             {
                 Status = Domain.Auth.AuthStatus.Failed,
                 Time = DateTime.SpecifyKind(dto.CreateTime, DateTimeKind.Utc),
-                RequestId = dto.Id,
+                RequestId = dto.Id.ToString(),
                 User = dto.User
             };
     }
