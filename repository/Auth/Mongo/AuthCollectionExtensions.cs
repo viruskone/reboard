@@ -5,11 +5,11 @@ namespace Reboard.Repository.Auth.Mongo
 {
     internal static class AuthCollectionExtensions
     {
-        internal static FailedAuthDto ToFailedDto(this Domain.Auth.Auth auth, ObjectId id)
+        internal static FailedAuthDto ToFailedDto(this Domain.Auth.Auth auth)
             => new FailedAuthDto
             {
-                Id = id,
-                User = auth.RequestId,
+                Id = auth.RequestId,
+                User = auth.User,
                 CreateTime = auth.Time
             };
 
@@ -18,7 +18,8 @@ namespace Reboard.Repository.Auth.Mongo
             {
                 Status = Domain.Auth.AuthStatus.Failed,
                 Time = DateTime.SpecifyKind(dto.CreateTime, DateTimeKind.Utc),
-                RequestId = dto.User
+                RequestId = dto.Id,
+                User = dto.User
             };
     }
 }

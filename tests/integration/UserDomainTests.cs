@@ -59,6 +59,29 @@ namespace Reboard.IntegrationTests
             auth.Token.Should().NotBeEmpty();
         }
 
+        [Fact]
+        public async Task authentication_failed_test()
+        {
+            var email = "example@domain.com";
+            var client = _factory
+                .WithWebHostBuilder(configuration =>
+                {
+                    configuration.ConfigureServices(services =>
+                    {
+                        services.AddTransient<IAuthRepository, TestAuthRepository>();
+                    });
+                    configuration.ConfigureLogging(x => x.AddXUnit(_outputHelper));
+                })
+                .CreateClient();
+
+            var auth = await ExecuteCommandAndGetResult<AuthenticationRequest, Auth>(client, "api/auth", new AuthenticationRequest
+            {
+                Login = email,
+                Password = "abc"
+            });
+            auth.Status.Should().Be(AuthStatus.Failed);
+        }
+
         private async Task<TResult> ExecuteCommandAndGetResult<TRequest, TResult>(HttpClient client, string commandUrl, TRequest commandPayload)
         {
             var response = await client.PostAsJsonAsync(commandUrl, commandPayload);

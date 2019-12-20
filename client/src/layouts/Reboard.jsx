@@ -65,22 +65,34 @@ const getActiveRoute = () => (
     routes.find(route => window.location.href.indexOf(route.path) !== -1)
 )
 
+const renderNavbar = (ui, actions, activeRoute) => {
+    return (
+        <React.Fragment>
+            <Sidebar 
+                {...actions} 
+                {...ui}
+                />
+            <Navbar 
+                {...actions} 
+                {...ui}
+                title={activeRoute.showTitle ? activeRoute.title : ""} />
+        </React.Fragment>
+    )
+}
+
 const Reboard = ({ ui, actions }) => {
 
     const classes = useStyles();
-    const activeRoute = getActiveRoute();
+    const activeRoute = getActiveRoute() || {};
+
+    let navbar = ""
+    if(activeRoute.showNavbar)
+        navbar = renderNavbar(ui, actions, activeRoute)
 
     return (
         <ThemeProvider theme={theme}>
             <div className={classes.wrapper}>
-                <Sidebar 
-                    {...actions} 
-                    {...ui}
-                 />
-                <Navbar 
-                    {...actions} 
-                    {...ui}
-                    title={activeRoute.showTitle ? activeRoute.title : ""} />
+                {navbar}
                 <div className={classes.content}>
                     {makeViewPlaceholder()}
                 </div>

@@ -18,15 +18,14 @@ namespace Reboard.Repository.Auth.Mongo
 
         public async Task<Domain.Auth.Auth> Create(Domain.Auth.Auth newEntity)
         {
-            var id = new ObjectId();
             switch (newEntity.Status)
             {
                 case Domain.Auth.AuthStatus.Failed:
-                    var dto = newEntity.ToFailedDto(id);
+                    var dto = newEntity.ToFailedDto();
                     await _failedAuthCollection.InsertOneAsync(dto);
                     break;
             }
-            return await Get(id.ToString());
+            return await Get(newEntity.RequestId);
         }
 
         public Task Delete(string id)

@@ -45,7 +45,7 @@ namespace Reboard.App.Users.Services
         public async Task<bool> Validate(string email, string hashedPassword)
         {
             var user = await _repository.Get(email);
-            return user.Password.Equals(hashedPassword);
+            return user != null && user.Password.Equals(hashedPassword);
         }
     }
 }

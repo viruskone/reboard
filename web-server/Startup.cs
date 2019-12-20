@@ -35,7 +35,17 @@ namespace Reboard.WebServer
             services
                 .AddCqrs(typeof(App.Reports.Register).Assembly)
                 .AddCqrs(typeof(App.Users.Register).Assembly)
-                .AddCors()
+                .AddCors(options =>
+                {
+                    options.AddDefaultPolicy(policy =>
+                    {
+                        policy
+                            .WithOrigins("http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("Location");
+                    });
+                })
                 .AddControllers();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
@@ -75,6 +85,7 @@ namespace Reboard.WebServer
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
+            app.UseCors();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -85,10 +96,6 @@ namespace Reboard.WebServer
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(x => x.MapControllers());

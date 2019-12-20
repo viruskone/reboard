@@ -1,10 +1,11 @@
 import * as types from "../constants/actions";
 import { setAuthenticationToken } from "../services/authService";
+import fetch202 from "../utils/fetch202"
 
 export function login(login, password) {
     return function(dispatch) {
       dispatch({ type: types.LOGIN_REQUEST });
-      fetch("http://localhost:5000/api/auth/login", { 
+      fetch202("http://localhost:5000/api/auth/login", { 
         method: 'POST', 
         body: JSON.stringify({login, password}),
         headers: {

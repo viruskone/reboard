@@ -26,11 +26,14 @@ namespace Reboard.App.Users.CommandHandlers
         {
             var valid = await _userService.Validate(command.Login, _hashService.Encrypt(command.Password));
             if (!valid)
-                await _authService.Failed(command.Id);
+            {
+                await _authService.Failed(command.Id, command.Login);
+                return;
+            }
             var token = _tokenFactory.Create();
             token.SetName(command.Login);
             token.SetExpiration(TimeSpan.FromDays(7));
-            await _authService.Success(command.Id, token.Generate());
+            await _authService.Success(command.Id, command.Login, token.Generate());
         }
     }
 }

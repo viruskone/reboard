@@ -3,11 +3,12 @@ import LoginView from "./views/LoginView";
 
 const defaultType = {
   needsAuth: false,
-  showTitle: false
+  showTitle: true,
+  showNavbar: true
 };
 
 const type = {
-  loginView: Object.assign({}, defaultType, { showTitle: true }),
+  loginView: Object.assign({}, defaultType, { showNavbar: false }),
   authenticatedView: Object.assign({}, defaultType, {
     needsAuth: true,
     showTitle: true

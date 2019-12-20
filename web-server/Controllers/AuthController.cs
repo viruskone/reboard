@@ -15,11 +15,13 @@ namespace Reboard.WebServer.Controllers
     {
         private readonly IQueryDispatcher _queryDispatcher;
         private readonly IQueueCommandDispatcher _dispatcher;
+        private readonly IUniqueIdFactory _idFactory;
 
-        public AuthController(IQueryDispatcher queryDispatcher, IQueueCommandDispatcher dispatcher)
+        public AuthController(IQueryDispatcher queryDispatcher, IQueueCommandDispatcher dispatcher, IUniqueIdFactory idFactory)
         {
             _queryDispatcher = queryDispatcher;
             _dispatcher = dispatcher;
+            _idFactory = idFactory;
         }
 
         [HttpGet]
@@ -30,7 +32,7 @@ namespace Reboard.WebServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(AuthenticationRequest request)
         {
-            var requestId = Guid.NewGuid().ToString();
+            var requestId = _idFactory.Next();
             var job = await _dispatcher.HandleAsync(new AuthenticateCommand
             {
                 Id = requestId,

@@ -5,8 +5,8 @@ namespace Reboard.App.Users.Services
 {
     public interface IAuthService
     {
-        Task Failed(string requestId);
-        Task Success(string requestId, string token);
+        Task Failed(string requestId, string user);
+        Task Success(string requestId, string user, string token);
         Task<Auth> Get(string requestId);
     }
 }

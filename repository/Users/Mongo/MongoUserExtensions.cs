@@ -12,10 +12,10 @@ namespace Reboard.Repository.Users.Mongo
         };
 
         public static User FromDto(this UserMongoDto dto)
-        => new User
-        {
-            Email = dto.Email,
-            Password = dto.Password
-        };
+            => dto != null ? new User
+            {
+                Email = dto.Email,
+                Password = dto.Password
+            } : null;
     }
 }
