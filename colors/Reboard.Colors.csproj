@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="HsvWithGoldenRatioColorGeneratorFactory.cs" />
+    <Content Include="IColorGeneratorFactory.cs" />
+    <Content Include="HsvWithGoldenRatioColorGenerator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\domain\Reboard.Domain.csproj" />
+    <Content Include="Rgb.cs" />
+    <Content Include="Hsv.cs" />
+    <Content Include="ColorConverter.cs" />
+    <Content Include="HsvColorGenerator.cs" />
+    <Content Include="ContrastRatio.cs" />
+    <Content Include="HsvContrastedColorGenerator.cs" />
+  </ItemGroup>
+</Project>

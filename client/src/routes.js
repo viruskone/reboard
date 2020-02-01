@@ -10,8 +10,7 @@ const defaultType = {
 const type = {
   loginView: Object.assign({}, defaultType, { showNavbar: false }),
   authenticatedView: Object.assign({}, defaultType, {
-    needsAuth: true,
-    showTitle: true
+    needsAuth: true
   })
 };
 

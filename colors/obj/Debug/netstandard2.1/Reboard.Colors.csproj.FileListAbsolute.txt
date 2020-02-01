@@ -1,0 +1,13 @@
+/home/virus/source/reboard/colors/obj/Debug/netstandard2.1/Reboard.Colors.csprojAssemblyReference.cache
+/home/virus/source/reboard/colors/obj/Debug/netstandard2.1/Reboard.Colors.AssemblyInfoInputs.cache
+/home/virus/source/reboard/colors/obj/Debug/netstandard2.1/Reboard.Colors.AssemblyInfo.cs
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.Colors.deps.json
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.Colors.dll
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.Colors.pdb
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.CQRS.dll
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.Domain.dll
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.Domain.pdb
+/home/virus/source/reboard/colors/bin/Debug/netstandard2.1/Reboard.CQRS.pdb
+/home/virus/source/reboard/colors/obj/Debug/netstandard2.1/Reboard.Colors.csproj.CopyComplete
+/home/virus/source/reboard/colors/obj/Debug/netstandard2.1/Reboard.Colors.dll
+/home/virus/source/reboard/colors/obj/Debug/netstandard2.1/Reboard.Colors.pdb

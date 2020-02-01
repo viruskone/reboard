@@ -10,6 +10,7 @@ namespace Reboard.Domain.Reports
         public DateTime CreateTime { get; set; }
         public int Downloads { get; set; }
         public TimeSpan AverageDuration { get; set; }
-        public double Rating { get; set; }
+        public Color Color { get; set; }
+        public string Shortcut { get; set; }
     }
 }

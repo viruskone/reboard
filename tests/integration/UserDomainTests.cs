@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Reboard.CQRS;
 using Reboard.Domain.Auth;
 using Reboard.Domain.Users;
+using Reboard.Domain.Users.Commands;
 using Reboard.IntegrationTests.Mocks;
 using Reboard.Repository;
 using System;
@@ -31,8 +33,8 @@ namespace Reboard.IntegrationTests
         [Fact]
         public async Task create_user_and_authenticate()
         {
-            var email = "example@domain.com";
-            var client = _factory
+            var email = "Example@domain.com";
+            var factory = _factory
                 .WithWebHostBuilder(configuration =>
                 {
                     configuration.ConfigureServices(services =>
@@ -41,14 +43,19 @@ namespace Reboard.IntegrationTests
                         services.AddTransient<IAuthRepository, TestAuthRepository>();
                     });
                     configuration.ConfigureLogging(x => x.AddXUnit(_outputHelper));
-                })
-                .CreateClient();
-            var user = await ExecuteCommandAndGetResult<CreateUserRequest, User>(client, "api/user", new CreateUserRequest
+                });
+
+            var client = factory.CreateClient();
+
+            var dispatcher = factory.Services.GetService(typeof(ICommandDispatcher)) as ICommandDispatcher;
+            await dispatcher.HandleAsync(new CreateUserCommand
             {
-                Email = email,
-                Password = "123"
+                Request = new CreateUserRequest
+                {
+                    Email = email,
+                    Password = "123"
+                }
             });
-            user.Email.Should().Be(email);
 
             var auth = await ExecuteCommandAndGetResult<AuthenticationRequest, Auth>(client, "api/auth", new AuthenticationRequest
             {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
 {
-    [Route("api/auth/{id?}")]
+    [Route("api/auth/{requestId?}")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -25,8 +25,8 @@ namespace Reboard.WebServer.Controllers
         }
 
         [HttpGet]
-        public async Task<OkObjectResult> GetAuth(string id)
-            => Ok(await _queryDispatcher.HandleAsync<AuthQuery, Auth>(new AuthQuery { Id = id }));
+        public async Task<OkObjectResult> GetAuth(string requestId)
+            => Ok(await _queryDispatcher.HandleAsync<AuthQuery, Auth>(new AuthQuery { Id = requestId }));
 
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace Reboard.WebServer.Controllers
                 Login = request.Login,
                 Password = request.Password
             });
-            job.RegisterResourceUrl(Url.Action(nameof(GetAuth), new { id = requestId }));
+            job.RegisterResourceUrl(Url.ActionLink(action: nameof(GetAuth), values: new { requestId }));
             return this.AcceptedAtTask(job.Id);
         }
     }

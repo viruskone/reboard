@@ -25,12 +25,5 @@ namespace Reboard.WebServer.Controllers
         public async Task<OkObjectResult> GetUser(string email)
             => Ok(await _queryDispatcher.HandleAsync<UserQuery, User>(new UserQuery { Email = email }));
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateUserRequest request)
-        {
-            var job = await _dispatcher.HandleAsync(new CreateUserCommand { Request = request });
-            job.RegisterResourceUrl(Url.Action(nameof(GetUser), new { email = request.Email }));
-            return this.AcceptedAtTask(job.Id);
-        }
     }
 }

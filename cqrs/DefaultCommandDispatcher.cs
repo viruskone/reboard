@@ -15,7 +15,6 @@ namespace Reboard.CQRS
         public async Task HandleAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
             var handler = _services.GetService(typeof(ICommandHandler<TCommand>)) as ICommandHandler<TCommand>;
-            await Task.Delay(TimeSpan.FromSeconds(5));
             await handler.HandleAsync(command);
         }
     }

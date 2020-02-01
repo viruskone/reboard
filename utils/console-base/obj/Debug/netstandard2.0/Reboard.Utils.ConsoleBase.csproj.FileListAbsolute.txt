@@ -1,0 +1,8 @@
+/home/virus/source/reboard/utils/console-base/bin/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.deps.json
+/home/virus/source/reboard/utils/console-base/bin/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.dll
+/home/virus/source/reboard/utils/console-base/bin/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.pdb
+/home/virus/source/reboard/utils/console-base/obj/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.csprojAssemblyReference.cache
+/home/virus/source/reboard/utils/console-base/obj/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.AssemblyInfoInputs.cache
+/home/virus/source/reboard/utils/console-base/obj/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.AssemblyInfo.cs
+/home/virus/source/reboard/utils/console-base/obj/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.dll
+/home/virus/source/reboard/utils/console-base/obj/Debug/netstandard2.0/Reboard.Utils.ConsoleBase.pdb

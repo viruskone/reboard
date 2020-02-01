@@ -17,6 +17,8 @@ using Reboard.Repository.Reports.Mongo;
 using Reboard.Repository.Users.Mongo;
 using Reboard.WebServer.Options;
 using System.Text;
+using Reboard.WebServer.Architecture;
+using System.Text.Json.Serialization;
 
 namespace Reboard.WebServer
 {
@@ -46,7 +48,12 @@ namespace Reboard.WebServer
                             .WithExposedHeaders("Location");
                     });
                 })
-                .AddControllers();
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
+                });
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -79,6 +86,7 @@ namespace Reboard.WebServer
             services.AddTransient<IAuthService, RepositoryAuthService>();
             services.AddSingleton<IHashService, Sha256HashService>();
             services.AddSingleton<ITokenFactory>(_ => new JwtTokenFactory(appSettings.Secret));
+            services.AddSingleton<IUniqueIdFactory, MongoUniqueIdFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

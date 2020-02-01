@@ -7,7 +7,6 @@ namespace Reboard.WebServer.Architecture
     internal static class CommandControllerExtensions
     {
         internal static IActionResult AcceptedAtTask(this ControllerBase controller, Guid id)
-            //        => controller.Accepted($"/api/command/{id}");
             => controller.Accepted(new Uri(controller.Request.GetAppBaseUri(), $"/api/command/{id}"));
 
         private static Uri GetAppBaseUri(this HttpRequest request)

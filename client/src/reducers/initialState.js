@@ -4,7 +4,8 @@ export default {
     },
     auth: {
         isAuthenticated: false,
-        loading: false
+        loading: false,
+        wrongCredentials: false
     },
     ui: {
         sidebarOpened: false

@@ -8,16 +8,21 @@ export default function reportsReducer(state = initialState.auth, action) {
             return Object.assign({}, state, { isAuthenticated: isAuthenticated() })
         case actions.LOGIN_REQUEST:
             return Object.assign({}, state, {
+                isAuthenticated: false,
+                wrongCredentials: false,
                 loading: true
             })
         case actions.LOGIN_SUCCESS:
             return Object.assign({}, state, {
-                isAuthenticated: action.payload.status,
+                isAuthenticated: true,
+                wrongCredentials: false,
                 loading: false
             });
         case actions.LOGIN_FAILURE:
             return Object.assign({}, state, {
-                loading: false
+                isAuthenticated: false,
+                loading: false,
+                wrongCredentials: action.payload.reason === 'WrongCredential'
             })
         default:
         return state;

@@ -14,7 +14,7 @@ namespace Reboard.Repository.Mongo
 
         private static string GenerateCollectionName<T>()
         {
-            var name = nameof(T);
+            var name = typeof(T).Name;
             name = name.Replace("mongo", "", System.StringComparison.InvariantCultureIgnoreCase);
             name = name.Replace("dto", "", System.StringComparison.InvariantCultureIgnoreCase);
             var result = new StringBuilder();
@@ -28,7 +28,7 @@ namespace Reboard.Repository.Mongo
                 }
                 result.Append(c);
             }
-            return result.ToString();
+            return result.ToString().Trim('_');
         }
 
     }

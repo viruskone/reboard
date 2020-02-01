@@ -16,6 +16,10 @@ namespace Reboard.App.Users.QueryHandlers
         }
 
         public async Task<User> HandleAsync(UserQuery query)
-            => await _service.Get(query.Email);
+        {
+            var user = await _service.Get(query.Email);
+            user.Password = string.Empty;
+            return user;
+        }
     }
 }

@@ -35,5 +35,6 @@ namespace Reboard.App.Users.Services
                 Time = DateTime.Now,
                 User = user
             });
+
     }
 }

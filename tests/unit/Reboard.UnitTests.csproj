@@ -1,22 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="FluentAssertions" Version="5.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\web-server\web-server.csproj" />
+    <Content Include="ColorTests.cs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\..\app\users\Reboard.App.Users.csproj" />
+    <ProjectReference Include="..\..\identity\Reboard.Identity.csproj" />
+    <ProjectReference Include="..\..\domain\Reboard.Domain.csproj" />
+    <ProjectReference Include="..\..\web-server\web-server.csproj" />
+    <ProjectReference Include="..\..\colors\Reboard.Colors.csproj" />
+  </ItemGroup>
 </Project>

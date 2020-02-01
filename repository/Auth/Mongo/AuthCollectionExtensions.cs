@@ -21,5 +21,25 @@ namespace Reboard.Repository.Auth.Mongo
                 RequestId = dto.Id.ToString(),
                 User = dto.User
             };
+
+        internal static SuccessAuthDto ToSuccessDto(this Domain.Auth.Auth auth)
+            => new SuccessAuthDto
+            {
+                Id = new ObjectId(auth.RequestId),
+                User = auth.User,
+                CreateTime = auth.Time,
+                Token = auth.Token
+            };
+
+        internal static Domain.Auth.Auth FromDto(this SuccessAuthDto dto)
+            => new Domain.Auth.Auth
+            {
+                Status = Domain.Auth.AuthStatus.Success,
+                Time = DateTime.SpecifyKind(dto.CreateTime, DateTimeKind.Utc),
+                RequestId = dto.Id.ToString(),
+                User = dto.User,
+                Token = dto.Token
+            };
+
     }
 }

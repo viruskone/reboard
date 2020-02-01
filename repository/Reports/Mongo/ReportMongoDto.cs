@@ -4,6 +4,7 @@ using System;
 
 namespace Reboard.Repository.Reports.Mongo
 {
+    [BsonIgnoreExtraElements]
     public class ReportMongoDto
     {
         [BsonId]
@@ -17,6 +18,7 @@ namespace Reboard.Repository.Reports.Mongo
 
         public int Downloads { get; set; }
         public TimeSpan AverageDuration { get; set; }
-        public double Rating { get; set; }
+        public ColorMongoDto Color { get; set; }
     }
+
 }
