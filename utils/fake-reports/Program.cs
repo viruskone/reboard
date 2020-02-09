@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
+using Reboard.Colors;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
 using Reboard.Utils.ConsoleBase;
@@ -12,6 +13,8 @@ namespace Reboard.Utils.FakeReports
     {
         private readonly IRepository<Report> _repository;
         private readonly Faker<Report> _faker;
+        private readonly HsvContrastedColorGenerator _generator = new HsvContrastedColorGenerator(new RangeDouble(0.8, 1), new RangeDouble(1));
+        private readonly Domain.Color _contrastColor = new Domain.Color { Red = 250, Green = 250, Blue = 250 };
 
         public Program(IRepository<Report> repository)
         {
@@ -20,7 +23,8 @@ namespace Reboard.Utils.FakeReports
                 .RuleFor(f => f.Title, (f, i) => f.Lorem.Sentence())
                 .RuleFor(f => f.Description, (f, i) => f.Lorem.Sentence(10, 20))
                 .RuleFor(f => f.Downloads, (f, i) => f.Random.Int(0, 10000))
-                .RuleFor(f => f.Rating, (f, i) => f.Random.Double(0, 5))
+                .RuleFor(f => f.Color, _generator.GetContrastedColor(_contrastColor, 1.8))
+                .RuleFor(f => f.Shortcut, (f, r) => _generator.GetContrastRatio(_contrastColor, r.Color).ToString("F2"))
                 .RuleFor(f => f.CreateTime, (f, i) => f.Date.Between(DateTime.Now.AddYears(-5), DateTime.Now))
                 .RuleFor(f => f.AverageDuration, (f, i) => TimeSpan.FromSeconds(f.Random.Double(0, 3600)));
         }

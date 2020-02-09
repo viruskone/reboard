@@ -10,7 +10,7 @@ namespace Reboard.UnitTests
         [Fact]
         public void check_generating_proper_rgb_color()
         {
-            var generator = new HsvColorGenerator(1, 1);
+            var generator = new HsvColorGenerator(new RangeDouble(1), new RangeDouble(1));
             var color = generator.Generate();
             color.Red.Should().BeInRange(0, 255).And.NotBe(color.Green);
             color.Green.Should().BeInRange(0, 255).And.NotBe(color.Blue);
