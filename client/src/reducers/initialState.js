@@ -3,6 +3,11 @@ export default {
         list: []
     },
     auth: {
-        isAuthenticated: false
+        isAuthenticated: false,
+        loading: false,
+        wrongCredentials: false
+    },
+    ui: {
+        sidebarOpened: false
     }
 }

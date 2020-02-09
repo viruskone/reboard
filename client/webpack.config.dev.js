@@ -44,7 +44,10 @@ export default {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
+        resolve: {
+          extensions: [".js", ".jsx"]
+        }
       },
       {
         test: /\.eot(\?v=\d+.\d+.\d+)?$/,

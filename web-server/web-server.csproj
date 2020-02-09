@@ -1,23 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <RootNamespace>Reboard.WebServer</RootNamespace>
   </PropertyGroup>
-
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="28.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.6.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\domain\Reboard.Domain.csproj" />
     <ProjectReference Include="..\cqrs\Reboard.CQRS.csproj" />
     <ProjectReference Include="..\repository\Reboard.Repository.csproj" />
     <ProjectReference Include="..\app\reports\Reboard.App.Reports.csproj" />
+    <ProjectReference Include="..\app\users\Reboard.App.Users.csproj" />
+    <Content Include="Controllers\ReportsController.cs" />
+    <Content Include="Color\IColorGeneratorFactory.cs" />
+    <Content Include="Controllers\UserController.cs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <ProjectReference Include="..\colors\Reboard.Colors.csproj" />
+  </ItemGroup>
 </Project>

@@ -5,7 +5,6 @@ namespace Reboard.CQRS
 {
     public class DefaultCommandDispatcher : ICommandDispatcher
     {
-
         private readonly IServiceProvider _services;
 
         public DefaultCommandDispatcher(IServiceProvider services)

@@ -1,15 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\domain\Reboard.Domain.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
+    <Content Include="Reports\Mongo\ReportMongoDto.cs" />
+    <Content Include="Reports\Mongo\ColorMongoDto.cs" />
+    <Content Include="Reports\Mongo\ReportCollectionExtensions.cs" />
   </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
-
 </Project>

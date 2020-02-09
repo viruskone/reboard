@@ -1,16 +1,24 @@
-﻿using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Reboard.WebServer.Options;
-using Reboard.CQRS;
 using Microsoft.Extensions.Hosting;
-using Reboard.Repository;
+using Microsoft.IdentityModel.Tokens;
+using Reboard.App.Users.Services;
+using Reboard.CQRS;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
+using Reboard.Identity;
+using Reboard.Repository;
+using Reboard.Repository.Auth.Mongo;
+using Reboard.Repository.Mongo;
+using Reboard.Repository.Reports.Mongo;
+using Reboard.Repository.Users.Mongo;
+using Reboard.WebServer.Options;
+using System.Text;
+using Reboard.WebServer.Architecture;
+using System.Text.Json.Serialization;
 
 namespace Reboard.WebServer
 {
@@ -28,8 +36,24 @@ namespace Reboard.WebServer
         {
             services
                 .AddCqrs(typeof(App.Reports.Register).Assembly)
-                .AddCors()
-                .AddControllers();
+                .AddCqrs(typeof(App.Users.Register).Assembly)
+                .AddCors(options =>
+                {
+                    options.AddDefaultPolicy(policy =>
+                    {
+                        policy
+                            .WithOrigins("http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("Location");
+                    });
+                })
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
+                });
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -54,14 +78,22 @@ namespace Reboard.WebServer
                     ValidateAudience = false
                 };
             });
-            services.AddSingleton<MongoConnection>(_ => new MongoConnection(Configuration.GetValue("MongoConnection", "")));
+            services.AddSingleton(_ => new MongoConnection(Configuration.GetValue("MongoConnection", ""), "reboard"));
             services.AddTransient<IRepository<Report>, MongoReportsRepository>();
+            services.AddTransient<IUserRepository, MongoUserRepository>();
+            services.AddTransient<IAuthRepository, MongoAuthRepository>();
+            services.AddTransient<IUserService, RepositoryUserService>();
+            services.AddTransient<IAuthService, RepositoryAuthService>();
+            services.AddSingleton<IHashService, Sha256HashService>();
+            services.AddSingleton<ITokenFactory>(_ => new JwtTokenFactory(appSettings.Secret));
+            services.AddSingleton<IUniqueIdFactory, MongoUniqueIdFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseRouting();
+            app.UseCors();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,10 +104,6 @@ namespace Reboard.WebServer
                 app.UseHsts();
                 app.UseHttpsRedirection();
             }
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(x => x.MapControllers());

@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Reboard.CQRS;
+using System.Collections.Generic;
 
 namespace Reboard.Domain.Reports.Queries
 {

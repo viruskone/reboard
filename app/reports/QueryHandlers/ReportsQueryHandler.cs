@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Reboard.CQRS;
 using Reboard.Domain;
 using Reboard.Domain.Reports;
 using Reboard.Domain.Reports.Queries;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Reboard.App.Reports.QueryHandlers
 {
@@ -19,6 +18,5 @@ namespace Reboard.App.Reports.QueryHandlers
 
         public async Task<IEnumerable<Report>> HandleAsync(ReportsQuery query)
             => await _repository.GetAll();
-            
     }
 }
