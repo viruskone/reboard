@@ -12,6 +12,7 @@ namespace Reboard.Repository.Reports.Mongo
 
         public string Title { get; set; }
         public string Description { get; set; }
+        public string Shortcut { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CreateTime { get; set; }

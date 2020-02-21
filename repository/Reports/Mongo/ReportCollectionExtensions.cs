@@ -32,6 +32,7 @@ namespace Reboard.Repository.Reports.Mongo
                 CreateTime = report.CreateTime,
                 Downloads = report.Downloads,
                 AverageDuration = report.AverageDuration,
+                Shortcut = report.Shortcut,
                 Color = report.Color.ToDto()
             };
 
@@ -45,6 +46,7 @@ namespace Reboard.Repository.Reports.Mongo
                 CreateTime = DateTime.SpecifyKind(dto.CreateTime, DateTimeKind.Utc),
                 Downloads = dto.Downloads,
                 AverageDuration = dto.AverageDuration,
+                Shortcut = dto.Shortcut,
                 Color = dto.Color.FromDto()
             };
 

@@ -14,5 +14,6 @@
     <Content Include="Class1.cs" />
     <Content Include="ProgramOptions.cs" />
     <Content Include="UtilRunner.cs" />
+    <Content Include="UtilMethods.cs" />
   </ItemGroup>
 </Project>

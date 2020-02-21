@@ -14,6 +14,11 @@ const layoutStyle = (theme) => ({
       width: `calc(100% - ${sidebarWidth}px)`
     },
   },
+  wrapperNoSidebar: {
+    [theme.breakpoints.up("md")]: {
+      width: `100%`
+    },
+  },
   content: {
     marginTop: '70px'
   }

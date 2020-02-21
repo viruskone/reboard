@@ -23,7 +23,7 @@ namespace Reboard.Utils.FakeReports
                 .RuleFor(f => f.Title, (f, i) => f.Lorem.Sentence())
                 .RuleFor(f => f.Description, (f, i) => f.Lorem.Sentence(10, 20))
                 .RuleFor(f => f.Downloads, (f, i) => f.Random.Int(0, 10000))
-                .RuleFor(f => f.Color, _generator.GetContrastedColor(_contrastColor, 1.8))
+                .RuleFor(f => f.Color, _ => _generator.GetContrastedColor(_contrastColor, 1.8))
                 .RuleFor(f => f.Shortcut, (f, r) => _generator.GetContrastRatio(_contrastColor, r.Color).ToString("F2"))
                 .RuleFor(f => f.CreateTime, (f, i) => f.Date.Between(DateTime.Now.AddYears(-5), DateTime.Now))
                 .RuleFor(f => f.AverageDuration, (f, i) => TimeSpan.FromSeconds(f.Random.Double(0, 3600)));

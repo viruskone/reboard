@@ -1,7 +1,9 @@
 import {
   isAuthenticated,
-  getAuthenticationToken
+  getAuthenticationToken,
+  burnToken
 } from "../services/authService";
+import { history } from "../store/configureStore";
 
 function fetchStatus(url) {
   return new Promise((resolve, reject) => {
@@ -37,7 +39,13 @@ function addHeaders(options) {
 }
 
 export function fetchQuery(url, options) {
-  return fetch(url, addHeaders(options))
+  return fetch(url, addHeaders(options)).then(response => {
+    if (response.status === 401) {
+      burnToken()
+      history.push('/login')
+    }
+    return response
+  });
 }
 
 export function fetchCommand(url, options) {

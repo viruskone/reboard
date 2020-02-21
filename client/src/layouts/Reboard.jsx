@@ -63,8 +63,8 @@ const makeViewPlaceholder = () => (
     </Switch>
 )
 
-const getActiveRoute = () => (
-    routes.find(route => window.location.href.indexOf(route.path) !== -1)
+const getActiveRoute = routeLocation => (
+    routes.find(route => routeLocation.indexOf(route.path) !== -1)
 )
 
 const renderNavbar = (ui, actions, activeRoute) => {
@@ -83,20 +83,20 @@ const renderNavbar = (ui, actions, activeRoute) => {
     )
 }
 
-const Reboard = ({ ui, actions }) => {
+const Reboard = ({ ui, routeLocation, actions }) => {
 
     const classes = useStyles();
-    const activeRoute = getActiveRoute() || {};
+    const activeRoute = getActiveRoute(routeLocation) || {};
 
     let navbar = ""
     if (activeRoute.showNavbar)
         navbar = renderNavbar(ui, actions, activeRoute)
 
-    return (
+        return (
         <ThemeProvider theme={theme}>
             <SnackbarProvider
                 anchorOrigin={{horizontal: 'center', vertical: 'top'}}>
-                <div className={classes.wrapper}>
+                <div className={`${classes.wrapper} ${activeRoute.showNavbar ? '' : classes.wrapperNoSidebar}`}>
                     {navbar}
                     <div className={classes.content}>
                         {makeViewPlaceholder()}
@@ -109,12 +109,14 @@ const Reboard = ({ ui, actions }) => {
 
 Reboard.propTypes = {
     ui: PropTypes.object.isRequired,
+    routeLocation: PropTypes.string,
     actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
     return {
-        ui: state.ui
+        ui: state.ui,
+        routeLocation: state.router.location.pathname
     };
 }
 
