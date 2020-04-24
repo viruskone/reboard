@@ -7,7 +7,7 @@
     <ProjectReference Include="..\domain\Reboard.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.9.2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.3" />
     <Content Include="Reports\Mongo\ReportMongoDto.cs" />
     <Content Include="Reports\Mongo\ColorMongoDto.cs" />
     <Content Include="Reports\Mongo\ReportCollectionExtensions.cs" />
