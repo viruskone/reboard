@@ -1,7 +1,7 @@
 import { sidebarWidth, logoWidth } from "../variables";
 import image from "../../../images/sidebar-river.jpg";
 import logoImage from "../../../images/logo.png";
-import { flexbox } from "@material-ui/system";
+//import { flexbox } from "@material-ui/system";
 
 const orgLogoSize = {w: 218, h: 68};
 const logoSize = {w: logoWidth, h: Math.floor(orgLogoSize.h * logoWidth / orgLogoSize.w)};
