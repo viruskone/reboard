@@ -2,11 +2,12 @@ import {createStore, compose, applyMiddleware} from 'redux';
 import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
 import thunk from 'redux-thunk';
 import { createBrowserHistory } from "history";
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+//import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { routerMiddleware } from 'connected-react-router';
 import createRootReducer from '../reducers';
 
 export const history = createBrowserHistory();
-const connectRouterHistory = connectRouter(history);
+//const connectRouterHistory = connectRouter(history);
 
 function configureStoreProd(initialState) {
   const reactRouterMiddleware = routerMiddleware(history);
@@ -37,12 +38,12 @@ function configureStoreDev(initialState) {
     composeEnhancers(applyMiddleware(...middlewares))
   );
 
-  if (module.hot) {
-    module.hot.accept('../reducers', () => {
-      const nextRootReducer = require('../reducers').default;
-      store.replaceReducer(connectRouterHistory(nextRootReducer));
-    });
-  }
+  // if (module.hot) {
+  //   module.hot.accept('../reducers', () => {
+  //     const nextRootReducer = require('../reducers').default;
+  //     store.replaceReducer(connectRouterHistory(nextRootReducer));
+  //   });
+  // }
 
   return store;
 }
