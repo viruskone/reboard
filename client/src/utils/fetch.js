@@ -51,8 +51,13 @@ export function fetchQuery(url, options) {
 export function fetchCommand(url, options) {
   return new Promise((resolve, reject) => {
     fetch(url, addHeaders(options)).then(response => {
+      if(response.status === 200){
+        resolve(response);
+        return;
+      }
       if (response.status !== 202 || !response.headers.has("Location")) {
         reject(response);
+        return;
       }
 
       fetchStatus(response.headers.get("Location")).then(statusResponse => {
@@ -61,8 +66,8 @@ export function fetchCommand(url, options) {
           addHeaders({
             method: "GET"
           })
-        ).then(resolve, reject);
+        ).then(resolve, reject)
       }, reject);
-    });
+    }, reject);
   });
 }

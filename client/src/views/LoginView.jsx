@@ -1,6 +1,5 @@
 import { Container, CssBaseline } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
-import { useSnackbar } from 'notistack';
 import PropTypes from "prop-types";
 import React from 'react';
 import { connect } from "react-redux";
@@ -12,13 +11,9 @@ import LoginForm from '../components/LoginForm/LoginForm'
 import PageLoader from "../components/PageLoader";
 
 const useStyles = makeStyles(styles);
-
 const showErrorSnackbarIfOccur = error => {
-    const { enqueueSnackbar } = useSnackbar();
     if (error) {
-        enqueueSnackbar("Login failed. Check typed credentials", {
-            variant: 'error'
-        })
+        logger.error("SNACK REQUIRED: Login failed. Check typed credentials")
     }
 }
 
@@ -28,10 +23,10 @@ const useLoader = isLoading => {
 
 const LoginView = (props) => {
 
+    showErrorSnackbarIfOccur(props.wrongCredentials)
+
     const classes = useStyles()
     const loader = useLoader(props.loading)
-
-    showErrorSnackbarIfOccur(props.wrongCredentials)
 
     return props.isAuthenticated ?
         <Redirect to={props.location.state} /> :

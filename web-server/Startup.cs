@@ -19,6 +19,8 @@ using Reboard.WebServer.Options;
 using System.Text;
 using Reboard.WebServer.Architecture;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Reboard.WebServer
 {
@@ -87,6 +89,7 @@ namespace Reboard.WebServer
             services.AddSingleton<IHashService, Sha256HashService>();
             services.AddSingleton<ITokenFactory>(_ => new JwtTokenFactory(appSettings.Secret));
             services.AddSingleton<IUniqueIdFactory, MongoUniqueIdFactory>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,6 +109,7 @@ namespace Reboard.WebServer
             }
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseWebSockets();
             app.UseEndpoints(x => x.MapControllers());
         }
     }

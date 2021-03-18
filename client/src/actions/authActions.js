@@ -5,7 +5,7 @@ import { fetchCommand } from "../utils/fetch";
 export function login(login, password) {
   return function(dispatch) {
     dispatch({ type: types.LOGIN_REQUEST });
-    fetchCommand("http://localhost:5000/api/auth/login", {
+    fetchCommand("http://localhost:5000/api/auth", {
       method: "POST",
       body: JSON.stringify({ login, password }),
       headers: {

@@ -26,5 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\colors\Reboard.Colors.csproj" />
+    <Content Include="Controllers\CommandController.cs" />
+    <Content Include="Controllers\AuthController.cs" />
   </ItemGroup>
 </Project>

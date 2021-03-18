@@ -32,7 +32,7 @@ namespace Reboard.CQRS
                 Command = command
             };
             Jobs.TryAdd(newJob.Id, newJob);
-            Task.Factory.StartNew(async () => await WorkItem<TCommand>(newJob));
+            Task.Factory.StartNew(async () => await WorkItem<TCommand>(newJob)).ConfigureAwait(false);
             return Task.FromResult(newJob);
         }
 
@@ -48,5 +48,10 @@ namespace Reboard.CQRS
             }
             job.Status = CommandStatus.Completed;
         }
+
+        public static void Subscribe(Action<Job> notifyCallback){
+            
+        }
+
     }
 }
