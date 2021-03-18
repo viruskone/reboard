@@ -1,4 +1,5 @@
 var path = require('path');
+var ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -21,7 +22,8 @@ module.exports = {
                 collapseWhitespace: true
             },
             inject: true
-        })
+        }),
+        new ReactRefreshWebpackPlugin()
     ],
     module: {
         rules: [
@@ -35,7 +37,7 @@ module.exports = {
                             '@babel/preset-env',
                             '@babel/preset-react'
                         ],
-                        plugins: ['js-logger']
+                        plugins: ['js-logger', require("react-refresh/babel")]
                     }
                 }
             },
@@ -49,9 +51,11 @@ module.exports = {
             }
         ]
     },
+    devtool: 'eval-source-map',
     devServer: {
         contentBase: path.resolve(__dirname, "dist"),
         historyApiFallback: true,
-        port: 3000
+        port: 3000,
+        hot: true
     }
 }
