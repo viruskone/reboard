@@ -6,6 +6,12 @@
     <RootNamespace>Reboard.WebServer</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Color\**" />
+    <Content Remove="Color\**" />
+    <EmbeddedResource Remove="Color\**" />
+    <None Remove="Color\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
@@ -21,7 +27,6 @@
     <ProjectReference Include="..\app\reports\Reboard.App.Reports.csproj" />
     <ProjectReference Include="..\app\users\Reboard.App.Users.csproj" />
     <Content Include="Controllers\ReportsController.cs" />
-    <Content Include="Color\IColorGeneratorFactory.cs" />
     <Content Include="Controllers\UserController.cs" />
   </ItemGroup>
   <ItemGroup>

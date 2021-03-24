@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
 {
+
     [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase

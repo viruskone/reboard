@@ -24,9 +24,7 @@ namespace Reboard.IntegrationTests.Mocks
         }
 
         public Task<T> Get(string id)
-        {
-            return Task.FromResult(InMemoryDb[id]);
-        }
+            => Task.FromResult(InMemoryDb.ContainsKey(id) ? InMemoryDb[id] : default);
 
         public Task<IEnumerable<T>> GetAll()
         {
