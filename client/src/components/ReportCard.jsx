@@ -7,7 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import { Avatar, Chip, Button } from "@material-ui/core";
-import { formatTimeSpan } from '../utils/humanDate';
+import { formatTimeSpan } from '../infrastructure/humanDate';
 import GetApp from "@material-ui/icons/GetApp";
 import AccessTime from "@material-ui/icons/AccessTime";
 import styles from '../assets/jss/reboard/components/reportCard';

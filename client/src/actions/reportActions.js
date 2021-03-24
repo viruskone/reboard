@@ -1,4 +1,4 @@
-import { fetchQuery } from "../utils/fetch";
+import { fetchQuery } from "../infrastructure/fetch";
 import * as types from "../constants/actions";
 
 export function fetchReports() {

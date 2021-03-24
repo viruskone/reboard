@@ -1,6 +1,6 @@
 import initialState from "./initialState";
 import * as actions from "../constants/actions";
-import { toSeconds } from '../utils/time'
+import { toSeconds } from '../infrastructure/time'
 
 export default function reportsReducer(state = initialState.reports, action) {
   switch (action.type) {

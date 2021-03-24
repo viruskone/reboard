@@ -5,7 +5,7 @@ export default {
     auth: {
         isAuthenticated: false,
         loading: false,
-        wrongCredentials: false
+        error: {}
     },
     ui: {
         sidebarOpened: false

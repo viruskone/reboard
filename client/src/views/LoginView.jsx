@@ -9,11 +9,14 @@ import logo from '../assets/images/logo.png';
 import styles from '../assets/jss/reboard/views/login';
 import LoginForm from '../components/LoginForm/LoginForm'
 import PageLoader from "../components/PageLoader";
+import { toast } from "react-toastify";
+import { getErrorMessage } from "../infrastructure/error"
 
 const useStyles = makeStyles(styles);
-const showErrorSnackbarIfOccur = error => {
-    if (error) {
-        logger.error("SNACK REQUIRED: Login failed. Check typed credentials")
+
+const handleErrors = errors => {
+    if(errors.code) {
+        toast.error(getErrorMessage(errors))
     }
 }
 
@@ -22,9 +25,7 @@ const useLoader = isLoading => {
   };
 
 const LoginView = (props) => {
-
-    showErrorSnackbarIfOccur(props.wrongCredentials)
-
+    handleErrors(props.error)
     const classes = useStyles()
     const loader = useLoader(props.loading)
 
@@ -45,14 +46,14 @@ LoginView.propTypes = {
     login: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     loading: PropTypes.bool,
-    wrongCredentials: PropTypes.bool
+    error: PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
         isAuthenticated: state.auth.isAuthenticated,
         loading: state.auth.loading,
-        wrongCredentials: state.auth.wrongCredentials
+        error: state.auth.error
     };
 }
 

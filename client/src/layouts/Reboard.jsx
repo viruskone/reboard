@@ -5,8 +5,7 @@ import PropTypes from "prop-types";
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { ThemeProvider } from "@material-ui/styles";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { SnackbarProvider } from 'notistack';
-import shadows from "../utils/shadows";
+import shadows from "../infrastructure/shadows";
 import "../assets/css/reboard-layout.css"
 import styles from "../assets/jss/reboard/layout"
 import Sidebar from '../components/Sidebar';
@@ -14,6 +13,8 @@ import Navbar from '../components/Navbar';
 import AuthRoute from '../components/AuthRoute';
 import routes from '../routes';
 import * as actions from '../actions/uiActions';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const theme = createMuiTheme({
     palette: {
@@ -93,17 +94,15 @@ const Reboard = ({ ui, routeLocation, actions }) => {
         navbar = renderNavbar(ui, actions, activeRoute)
 
         return (
-        <ThemeProvider theme={theme}>
-            <SnackbarProvider
-                anchorOrigin={{horizontal: 'center', vertical: 'top'}}>
-                <div className={`${classes.wrapper} ${activeRoute.showNavbar ? '' : classes.wrapperNoSidebar}`}>
-                    {navbar}
-                    <div className={classes.content}>
-                        {makeViewPlaceholder()}
+            <ThemeProvider theme={theme}>
+                    <div className={`${classes.wrapper} ${activeRoute.showNavbar ? '' : classes.wrapperNoSidebar}`}>
+                        {navbar}
+                        <div className={classes.content}>
+                            {makeViewPlaceholder()}
+                        </div>
                     </div>
-                </div>
-            </SnackbarProvider>
-        </ThemeProvider>
+                    <ToastContainer autoClose={10000} position={toast.POSITION.BOTTOM_RIGHT} />
+            </ThemeProvider>
     )
 }
 

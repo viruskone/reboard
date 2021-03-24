@@ -1,6 +1,8 @@
 import * as types from "../constants/actions";
 import { setAuthenticationToken } from "../services/authService";
-import { fetchCommand } from "../utils/fetch";
+import { fetchCommand } from "../infrastructure/fetch";
+import { failurePayload } from "../infrastructure/error"
+import { LOGIN_WRONG_CREDENTIALS, FETCH_ERROR } from "../constants/errors"
 
 export function login(login, password) {
   return function(dispatch) {
@@ -17,9 +19,7 @@ export function login(login, password) {
       if (response.status === "Failed") {
         dispatch({
           type: types.LOGIN_FAILURE,
-          payload: {
-            reason: 'WrongCredential'
-          }
+          payload: failurePayload(LOGIN_WRONG_CREDENTIALS)
         });
       } else {
         setAuthenticationToken(response.token);
@@ -31,10 +31,7 @@ export function login(login, password) {
     .catch(err =>
       dispatch({
         type: types.LOGIN_FAILURE,
-        payload: {
-          reason: 'InternalError',
-          error: err
-        }
+        payload: failurePayload(FETCH_ERROR, err)
       })
     );
   };

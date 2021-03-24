@@ -19,7 +19,7 @@ const LoginForm = (props) => {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Login"
                 name="email"
                 autoComplete="email"
                 autoFocus
