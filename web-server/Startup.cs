@@ -21,6 +21,7 @@ using Reboard.WebServer.Architecture;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Threading.Tasks;
 
 namespace Reboard.WebServer
 {
@@ -33,7 +34,6 @@ namespace Reboard.WebServer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services
@@ -50,6 +50,17 @@ namespace Reboard.WebServer
                             .WithExposedHeaders("Location");
                     });
                 })
+                .AddTransient<IWsProvider, WsProvider>()
+                .AddTransient<INotification, WsProvider>()
+                .AddSingleton<IQueryDispatcher, DefaultQueryDispatcher>()
+                .AddSingleton<ICommandDispatcher, DefaultCommandDispatcher>()
+                .AddSingleton<InMemoryQueueCommandDispatcher>()
+                .AddSingleton<IQueueCommandDispatcher>(sp => 
+                    new WsQueueCommandDispatcher(
+                        sp.GetRequiredService<InMemoryQueueCommandDispatcher>(), 
+                        sp.GetRequiredService<IHttpContextAccessor>(), 
+                        sp.GetRequiredService<INotification>()))
+
                 .AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -78,6 +89,19 @@ namespace Reboard.WebServer
                     IssuerSigningKey = new SymmetricSecurityKey(secretKey),
                     ValidateIssuer = false,
                     ValidateAudience = false
+                };
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Headers.ContainsKey("sec-websocket-protocol") && context.HttpContext.WebSockets.IsWebSocketRequest)
+                        {
+                            var protocols = context.Request.Headers["sec-websocket-protocol"].ToString().Split(", ");
+                            context.Request.Headers["sec-websocket-protocol"] = protocols[0];
+                            context.Token = protocols[1];
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
             services.AddSingleton(_ => new MongoConnection(Configuration.GetValue("MongoConnection", ""), "reboard"));

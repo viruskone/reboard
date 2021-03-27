@@ -7,11 +7,11 @@ namespace Reboard.CQRS
 {
     public static class CqrsExtensions
     {
+
+
+
         public static IServiceCollection AddCqrs(this IServiceCollection services, Assembly forAssembly)
             => services
-                .AddSingleton<IQueryDispatcher, DefaultQueryDispatcher>()
-                .AddSingleton<ICommandDispatcher, DefaultCommandDispatcher>()
-                .AddSingleton<IQueueCommandDispatcher, InMemoryQueueCommandDispatcher>()
                 .AddCommandQueryHandlers(forAssembly, typeof(ICommandHandler<>))
                 .AddCommandQueryHandlers(forAssembly, typeof(IQueryHandler<,>));
 

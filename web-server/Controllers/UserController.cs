@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Reboard.CQRS;
 using Reboard.Domain.Users;
-using Reboard.Domain.Users.Commands;
 using Reboard.Domain.Users.Queries;
-using Reboard.WebServer.Architecture;
 using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
@@ -12,12 +10,10 @@ namespace Reboard.WebServer.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IQueueCommandDispatcher _dispatcher;
         private readonly IQueryDispatcher _queryDispatcher;
 
-        public UserController(IQueueCommandDispatcher dispatcher, IQueryDispatcher queryDispatcher)
+        public UserController(IQueryDispatcher queryDispatcher)
         {
-            _dispatcher = dispatcher;
             _queryDispatcher = queryDispatcher;
         }
 

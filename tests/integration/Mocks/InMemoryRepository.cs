@@ -13,7 +13,8 @@ namespace Reboard.IntegrationTests.Mocks
 
         public Task<T> Create(T newEntity)
         {
-            InMemoryDb.Add(KeySelector(newEntity), newEntity);
+            if (!InMemoryDb.ContainsKey(KeySelector(newEntity)))
+                InMemoryDb.Add(KeySelector(newEntity), newEntity);
             return Task.FromResult(newEntity);
         }
 

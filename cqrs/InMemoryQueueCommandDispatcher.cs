@@ -17,12 +17,6 @@ namespace Reboard.CQRS
             _logger = logger;
         }
 
-        public Task<Job> GetJob(Guid id)
-        {
-            Jobs.TryGetValue(id, out var job);
-            return Task.FromResult(job);
-        }
-
         public Task<Job> HandleAsync<TCommand>(TCommand command) where TCommand : ICommand
         {
             var newJob = new Job

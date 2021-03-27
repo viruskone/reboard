@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Reboard.CQRS;
 using Reboard.Domain.Auth;
 using Reboard.Domain.Users;
 using Reboard.Domain.Users.Commands;
@@ -23,7 +24,7 @@ namespace Reboard.IntegrationTests
             var email = "Example@domain.com";
             var client = CreateClient();
 
-            await dispatcher.HandleAsync(new CreateUserCommand
+            await GetService<ICommandDispatcher>().HandleAsync(new CreateUserCommand
             {
                 Request = new CreateUserRequest
                 {
