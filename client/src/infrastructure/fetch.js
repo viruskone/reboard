@@ -5,30 +5,6 @@ import {
 } from "../services/authService";
 import { history } from "../store/configureStore";
 
-function fetchStatus(url) {
-  return new Promise((resolve, reject) => {
-    const fetchStatusInternal = () => {
-      fetch(
-        url,
-        addHeaders({
-          method: "GET"
-        })
-      )
-        .then(response => {
-          if (response.status === 202) {
-            setTimeout(fetchStatusInternal, 100);
-          } else if (response.status >= 200 && response.status < 300) {
-            resolve(response);
-          } else {
-            reject(response);
-          }
-        })
-        .catch(reject);
-    };
-    fetchStatusInternal();
-  });
-}
-
 function addHeaders(options) {
   const headers = {};
   headers["Accept"] = "application/json";
@@ -59,15 +35,7 @@ export function fetchCommand(url, options) {
         reject(response);
         return;
       }
-
-      fetchStatus(response.headers.get("Location")).then(statusResponse => {
-        fetch(
-          statusResponse.headers.get("Location"),
-          addHeaders({
-            method: "GET"
-          })
-        ).then(resolve, reject)
-      }, reject);
+      // websocket notification to implement
     }, reject);
   });
 }

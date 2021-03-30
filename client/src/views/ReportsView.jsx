@@ -28,7 +28,7 @@ function ReportsView(props) {
 
     useEffect(() => {
         props.fetchReports()
-    }, props.reports.length)
+    }, [props.reports.length])
 
     const classes = useStyles();
 

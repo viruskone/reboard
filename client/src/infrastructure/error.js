@@ -1,4 +1,3 @@
-import Logger from "js-logger"
 import * as errors from "../constants/errors"
 
 export function failurePayload(code, error) {
@@ -7,7 +6,6 @@ export function failurePayload(code, error) {
         details: error ? error.message : '',
         error
     }
-    Logger.error(result)
     return result
 }
 
