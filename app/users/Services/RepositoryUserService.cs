@@ -14,27 +14,24 @@ namespace Reboard.App.Users.Services
             _repository = repository;
         }
 
-        public async Task Create(string email)
+        public async Task Create(User user)
         {
             try
             {
-                await _repository.Create(new User
-                {
-                    Email = email
-                });
+                await _repository.Create(user);
             }
             catch (DuplicateEntryException)
             {
-                throw new UserException(UserException.ErrorType.UserAlreadyExist, email);
+                throw new UserException(UserException.ErrorType.UserAlreadyExist, user.Login);
             }
         }
 
-        public async Task<User> Get(string email)
-            => await _repository.Get(email);
+        public async Task<User> Get(string login)
+            => await _repository.Get(login);
 
-        public async Task SetPassword(string email, string hashedPassword)
+        public async Task SetPassword(string login, string hashedPassword)
         {
-            var user = await _repository.Get(email);
+            var user = await _repository.Get(login);
             if (user != null)
             {
                 user.Password = hashedPassword;
@@ -42,9 +39,9 @@ namespace Reboard.App.Users.Services
             }
         }
 
-        public async Task<bool> Validate(string email, string hashedPassword)
+        public async Task<bool> Validate(string login, string hashedPassword)
         {
-            var user = await _repository.Get(email);
+            var user = await _repository.Get(login);
             return user != null && user.Password.Equals(hashedPassword);
         }
     }

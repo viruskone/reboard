@@ -3,6 +3,7 @@ using Reboard.CQRS;
 using Reboard.Domain.Auth.Commands;
 using Reboard.Identity;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Reboard.App.Users.CommandHandlers
@@ -30,8 +31,10 @@ namespace Reboard.App.Users.CommandHandlers
                 await _authService.Failed(command.Id, command.Login);
                 return;
             }
+            var user = await _userService.Get(command.Login);
             var token = _tokenFactory.Create();
             token.SetName(command.Login);
+            token.AddClaim("user", JsonSerializer.Serialize(user));
             token.SetExpiration(TimeSpan.FromDays(7));
             await _authService.Success(command.Id, command.Login, token.Generate());
         }

@@ -21,20 +21,24 @@ namespace Reboard.App.Users.CommandHandlers
         public async Task HandleAsync(CreateUserCommand command)
         {
             var request = command.Request;
-            await CreateUser(request.Email);
-            await SetPassword(request.Email, request.Password);
+            await CreateUser(new User
+            {
+                Login = command.Request.Login,
+                Company = command.Request.Company
+            });
+            await SetPassword(request.Login, request.Password);
         }
 
-        private async Task CreateUser(string email)
+        private async Task CreateUser(User user)
         {
             try
             {
-                await _service.Create(email);
+                await _service.Create(user);
             }
             catch (UserException exception) when (exception.Type == UserException.ErrorType.UserAlreadyExist) { }
         }
 
-        private async Task SetPassword(string email, string password)
-            => await _service.SetPassword(email, _hashing.Encrypt(password));
+        private async Task SetPassword(string login, string password)
+            => await _service.SetPassword(login, _hashing.Encrypt(password));
     }
 }

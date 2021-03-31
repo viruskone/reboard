@@ -33,7 +33,9 @@ namespace Reboard.Repository.Reports.Mongo
                 Downloads = report.Downloads,
                 AverageDuration = report.AverageDuration,
                 Shortcut = report.Shortcut,
-                Color = report.Color.ToDto()
+                Color = report.Color.ToDto(),
+                AllowedUsers = report.AllowedUsers,
+                AllowedCompanies = report.AllowedCompanies
             };
 
         public static Report FromDto(this ReportMongoDto dto) =>
@@ -47,7 +49,9 @@ namespace Reboard.Repository.Reports.Mongo
                 Downloads = dto.Downloads,
                 AverageDuration = dto.AverageDuration,
                 Shortcut = dto.Shortcut,
-                Color = dto.Color.FromDto()
+                Color = dto.Color.FromDto(),
+                AllowedUsers = dto.AllowedUsers,
+                AllowedCompanies = dto.AllowedCompanies
             };
 
         public static ReportMongoDto AssingNewId(this ReportMongoDto dto)

@@ -5,11 +5,11 @@ namespace Reboard.App.Users.Services
 {
     public interface IUserService
     {
-        Task Create(string email);
+        Task Create(User user);
 
-        Task SetPassword(string email, string hashedPassword);
+        Task SetPassword(string login, string hashedPassword);
 
-        Task<User> Get(string email);
+        Task<User> Get(string login);
 
         Task<bool> Validate(string login, string password);
     }

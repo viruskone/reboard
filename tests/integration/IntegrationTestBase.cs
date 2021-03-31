@@ -57,7 +57,7 @@ namespace Reboard.IntegrationTests
             {
                 Request = new CreateUserRequest
                 {
-                    Email = login,
+                    Login = login,
                     Password = password
                 }
             });

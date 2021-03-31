@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
 {
-    [Route("api/user/{email?}")]
+    [Route("api/user/{login?}")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -18,8 +18,8 @@ namespace Reboard.WebServer.Controllers
         }
 
         [HttpGet]
-        public async Task<OkObjectResult> GetUser(string email)
-            => Ok(await _queryDispatcher.HandleAsync<UserQuery, User>(new UserQuery { Email = email }));
+        public async Task<OkObjectResult> GetUser(string login)
+            => Ok(await _queryDispatcher.HandleAsync<UserQuery, User>(new UserQuery { Login = login }));
 
     }
 }

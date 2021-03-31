@@ -33,8 +33,15 @@ namespace Reboard.Utils.FakeReports
         {
             int reportsCount = 0;
             while (!Int32.TryParse(methods.Ask("reports count"), out reportsCount)) { }
+            var forUser = methods.Ask("For users (* mean for all, leave empty if you want set that by company)");
+            var forCompany = methods.Ask("For company");
             methods.Processing();
-            await Task.WhenAll(_faker.Generate(reportsCount).Select(x => _repository.Create(x)));
+            await Task.WhenAll(_faker.Generate(reportsCount).Select(async x =>
+            {
+                x.AllowedUsers = forUser.Split(",").Select(s => s.Trim()).ToArray();
+                x.AllowedCompanies = forCompany.Split(",").Select(s => s.Trim()).ToArray();
+                await _repository.Create(x);
+            }));
         }
 
         static async Task Main(string[] args)

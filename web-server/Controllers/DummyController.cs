@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Reboard.CQRS;
 using Reboard.Domain.Dummy;
 using Reboard.Domain.Dummy.Commands;
+using Reboard.WebServer.Architecture;
 using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
@@ -14,10 +15,12 @@ namespace Reboard.WebServer.Controllers
     {
 
         private readonly IQueueCommandDispatcher _dispatcher;
+        private readonly IUserAccessor _userAccessor;
 
-        public DummyController(IQueueCommandDispatcher dispatcher)
+        public DummyController(IQueueCommandDispatcher dispatcher, IUserAccessor userAccessor)
         {
             _dispatcher = dispatcher;
+            _userAccessor = userAccessor;
         }
 
         [HttpPost]
@@ -26,6 +29,18 @@ namespace Reboard.WebServer.Controllers
         {
             await _dispatcher.HandleAsync(new DummyCommand { PastAsResponse = request.PastAsResponse });
             return Accepted();
+        }
+
+        [HttpPost]
+        [Route("user")]
+        [Authorize]
+        public StatusCodeResult UserTest(DummyUserRequest request)
+        {
+            var user = _userAccessor.Get();
+            if (user == null) return BadRequest();
+            if (user.Login != request.Login) return BadRequest();
+            if (user.Company != request.Company) return BadRequest();
+            return Ok();
         }
 
     }

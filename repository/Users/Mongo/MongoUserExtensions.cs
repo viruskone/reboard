@@ -7,15 +7,17 @@ namespace Reboard.Repository.Users.Mongo
         public static UserMongoDto ToDto(this User user)
         => new UserMongoDto
         {
-            Email = user.Email,
-            Password = user.Password
+            Login = user.Login,
+            Password = user.Password,
+            Company = user.Company
         };
 
         public static User FromDto(this UserMongoDto dto)
             => dto != null ? new User
             {
-                Email = dto.Email,
-                Password = dto.Password
+                Login = dto.Login,
+                Password = dto.Password,
+                Company = dto.Company
             } : null;
     }
 }

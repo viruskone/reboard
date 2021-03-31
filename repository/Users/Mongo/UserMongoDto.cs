@@ -5,8 +5,9 @@ namespace Reboard.Repository.Users.Mongo
     public class UserMongoDto
     {
         [BsonId]
-        public string Email { get; set; }
+        public string Login { get; set; }
 
         public string Password { get; set; }
+        public string Company { get; set; }
     }
 }

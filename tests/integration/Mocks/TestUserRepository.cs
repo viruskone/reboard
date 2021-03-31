@@ -7,6 +7,6 @@ namespace Reboard.IntegrationTests.Mocks
 
     internal class TestUserRepository : InMemoryRepository<User>, IUserRepository
     {
-        protected override Func<User, string> KeySelector { get; } = entity => entity.Email;
+        protected override Func<User, string> KeySelector { get; } = entity => entity.Login;
     }
 }

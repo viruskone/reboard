@@ -1,6 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -10,7 +12,8 @@ namespace Reboard.Identity
     {
         private readonly byte[] _key;
         private string name;
-        private TimeSpan expiration;
+        private TimeSpan expiration = TimeSpan.FromMinutes(5);
+        private Dictionary<string, string> claims = new Dictionary<string, string>();
 
         public JwtTokenGenerator(string secretKey)
         {
@@ -19,13 +22,13 @@ namespace Reboard.Identity
 
         public string Generate()
         {
+            var subjectClaims = new List<Claim>();
+            subjectClaims.Add(new Claim(ClaimTypes.Name, name));
+            subjectClaims.AddRange(claims.ToList().Select(kvp => new Claim(kvp.Key, kvp.Value)));
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, name)
-                }),
+                Subject = new ClaimsIdentity(subjectClaims),
                 Expires = DateTime.UtcNow.Add(expiration),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -37,5 +40,8 @@ namespace Reboard.Identity
         public void SetExpiration(TimeSpan lifetime) => expiration = lifetime;
 
         public void SetName(string name) => this.name = name;
+
+        public void AddClaim(string name, string value) => claims.Add(name, value);
+
     }
 }

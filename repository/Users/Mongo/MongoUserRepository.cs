@@ -25,19 +25,19 @@ namespace Reboard.Repository.Users.Mongo
             }
             catch (MongoWriteException mexc) when (mexc.WriteError.Code == 11000)
             {
-                throw new DuplicateEntryException(newEntity.Email);
+                throw new DuplicateEntryException(newEntity.Login);
             }
-            return await Get(newEntity.Email);
+            return await Get(newEntity.Login);
         }
 
-        public async Task Delete(string email)
+        public async Task Delete(string login)
         {
-            await _collection.FindOneAndDeleteAsync(GetFilterByEmail(email));
+            await _collection.FindOneAndDeleteAsync(GetFilterByLogin(login));
         }
 
-        public async Task<User> Get(string email)
+        public async Task<User> Get(string login)
         {
-            var result = await _collection.FindAsync(GetFilterByEmail(email));
+            var result = await _collection.FindAsync(GetFilterByLogin(login));
             return (await result.FirstOrDefaultAsync()).FromDto();
         }
 
@@ -48,11 +48,11 @@ namespace Reboard.Repository.Users.Mongo
 
         public async Task<User> Update(User newEntity)
         {
-            await _collection.ReplaceOneAsync(GetFilterByEmail(newEntity.Email), newEntity.ToDto());
-            return await Get(newEntity.Email);
+            await _collection.ReplaceOneAsync(GetFilterByLogin(newEntity.Login), newEntity.ToDto());
+            return await Get(newEntity.Login);
         }
 
-        private FilterDefinition<UserMongoDto> GetFilterByEmail(string email)
-            => new FilterDefinitionBuilder<UserMongoDto>().Eq(dto => dto.Email, email);
+        private FilterDefinition<UserMongoDto> GetFilterByLogin(string login)
+            => new FilterDefinitionBuilder<UserMongoDto>().Eq(dto => dto.Login, login);
     }
 }

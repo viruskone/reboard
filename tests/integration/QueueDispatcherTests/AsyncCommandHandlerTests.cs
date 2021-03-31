@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Reboard.CQRS;
 using Reboard.Domain.Dummy;
-using Reboard.Domain.Dummy.Commands;
 using Reboard.WebServer;
 using Reboard.WebServer.Architecture;
 using System;
@@ -30,11 +29,11 @@ namespace Reboard.IntegrationTests.QueueDispatcherTests
             var queueDispatcher = GetService<IQueueCommandDispatcher>();
             queueDispatcher.Should().NotBeNull();
 
-            var socket = await CreateWebSocketClient("/api/command/ws");
+            var socket = await CreateWebSocketClient("/api/command/ws", nameof(dispatch_command_and_get_result_by_ws));
             socket.State.Should().Be(WebSocketState.Open);
 
 
-            var client = await CreateAuthenticatedClient();
+            var client = await CreateAuthenticatedClient(nameof(dispatch_command_and_get_result_by_ws));
             var dummyResponse = await client.PostAsJsonAsync("api/dummy/command", new DummyRequest { PastAsResponse = "abc" });
             dummyResponse.StatusCode.Should().Be(HttpStatusCode.Accepted);
 
@@ -56,20 +55,6 @@ namespace Reboard.IntegrationTests.QueueDispatcherTests
             services.AddCqrs(typeof(AsyncCommandHandlerTests).Assembly);
         }
 
-    }
-
-
-
-    public class DummyCommandHandler : ICommandHandler<DummyCommand>
-    {
-
-        internal static ManualResetEvent Event { get; } = new ManualResetEvent(false);
-
-        public Task HandleAsync(DummyCommand command)
-        {
-            Event.WaitOne();
-            return Task.CompletedTask;
-        }
     }
 
 }

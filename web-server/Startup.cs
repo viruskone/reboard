@@ -50,6 +50,7 @@ namespace Reboard.WebServer
                             .WithExposedHeaders("Location");
                     });
                 })
+                .AddTransient<IUserAccessor, UserAccessor>()
                 .AddTransient<IWsProvider, WsProvider>()
                 .AddTransient<INotification, WsProvider>()
                 .AddSingleton<IQueryDispatcher, DefaultQueryDispatcher>()

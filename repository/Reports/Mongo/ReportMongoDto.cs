@@ -20,6 +20,8 @@ namespace Reboard.Repository.Reports.Mongo
         public int Downloads { get; set; }
         public TimeSpan AverageDuration { get; set; }
         public ColorMongoDto Color { get; set; }
+        public string[] AllowedCompanies { get; set; }
+        public string[] AllowedUsers { get; set; }
     }
 
 }

@@ -33,14 +33,16 @@ namespace Reboard.Utils.NewUser
         public async Task Run(UtilMethods methods)
         {
             var email = methods.Ask("e-mail");
+            var company = methods.Ask("company");
             var password = methods.Ask("password");
-            
+
             methods.Processing();
             await _dispatcher.HandleAsync(new CreateUserCommand
             {
                 Request = new CreateUserRequest
                 {
-                    Email = email,
+                    Login = email,
+                    Company = company,
                     Password = password
                 }
             });

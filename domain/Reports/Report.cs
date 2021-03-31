@@ -12,5 +12,7 @@ namespace Reboard.Domain.Reports
         public TimeSpan AverageDuration { get; set; }
         public Color Color { get; set; }
         public string Shortcut { get; set; }
+        public string[] AllowedUsers { get; set; }
+        public string[] AllowedCompanies { get; set; }
     }
 }

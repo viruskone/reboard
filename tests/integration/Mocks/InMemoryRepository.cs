@@ -7,14 +7,25 @@ namespace Reboard.IntegrationTests.Mocks
 {
     internal abstract class InMemoryRepository<T>
     {
-        private readonly static Dictionary<string, T> InMemoryDb = new Dictionary<string, T>();
+        private readonly Dictionary<string, T> InMemoryDb = new Dictionary<string, T>();
 
         protected abstract Func<T, string> KeySelector { get; }
 
         public Task<T> Create(T newEntity)
         {
-            if (!InMemoryDb.ContainsKey(KeySelector(newEntity)))
-                InMemoryDb.Add(KeySelector(newEntity), newEntity);
+            try
+            {
+                InMemoryDb.TryAdd(KeySelector(newEntity), newEntity);
+            }
+            catch (NullReferenceException)
+            {
+                if (InMemoryDb == null)
+                    throw new Exception("Puste DB");
+                if(newEntity == null)
+                    throw new Exception("Puste entity");
+                if (KeySelector == null)
+                    throw new Exception("Pusty selector");
+            }
             return Task.FromResult(newEntity);
         }
 
