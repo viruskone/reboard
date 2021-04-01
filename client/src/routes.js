@@ -1,5 +1,7 @@
 import ReportsView from "./views/ReportsView";
 import LoginView from "./views/LoginView";
+import ReportDetails from "./views/ReportDetails";
+import { matchPath } from "react-router"
 
 const defaultType = {
   needsAuth: false,
@@ -26,10 +28,17 @@ const routes = [
     title: "Sign In",
     component: LoginView,
     ...type.loginView
+  },
+  {
+    path: "/report/:reportId",
+    component: ReportDetails,
+    showTitle: true,
+    showNavbar: true
   }
 ];
 
 export const getActiveRoute = () =>
-  routes.find(route => window.location.href.indexOf(route.path) !== -1);
+  //routes.find(route => window.location.href.indexOf(route.path) !== -1);
+  routes.find(route => matchPath(window.location.pathname, route))
 
 export default routes;

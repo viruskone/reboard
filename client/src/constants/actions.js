@@ -7,3 +7,4 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+export const NAVBAR_TITLE = 'NAVBAR_TITLE';

@@ -11,7 +11,7 @@ import styles from "../assets/jss/reboard/layout"
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import AuthRoute from '../components/AuthRoute';
-import routes from '../routes';
+import routes, { getActiveRoute } from '../routes';
 import * as actions from '../actions/uiActions';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -64,9 +64,11 @@ const makeViewPlaceholder = () => (
     </Switch>
 )
 
-const getActiveRoute = routeLocation => (
-    routes.find(route => routeLocation.indexOf(route.path) !== -1)
-)
+const getTitle = (ui, activeRoute) => {
+    if(activeRoute.showTitle === false) return ""
+    if(activeRoute.title) return activeRoute.title
+    return ui.navbarTitle
+}
 
 const renderNavbar = (ui, actions, activeRoute) => {
     return (
@@ -79,7 +81,7 @@ const renderNavbar = (ui, actions, activeRoute) => {
             <Navbar
                 {...actions}
                 {...ui}
-                title={activeRoute.showTitle ? activeRoute.title : ""} />
+                title={getTitle(ui, activeRoute)} />
         </React.Fragment>
     )
 }
