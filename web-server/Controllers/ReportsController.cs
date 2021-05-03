@@ -4,13 +4,16 @@ using Microsoft.Extensions.Logging;
 using Reboard.CQRS;
 using Reboard.Domain.Reports;
 using Reboard.Domain.Reports.Queries;
+using Reboard.Domain.Users;
 using Reboard.WebServer.Architecture;
+using Reboard.WebServer.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Reboard.WebServer.Controllers
 {
-    [Route("api/reports")]
+    [Route("api/reports/{id?}")]
     [Authorize]
     [ApiController]
     public class ReportsController : ControllerBase
@@ -27,21 +30,36 @@ namespace Reboard.WebServer.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Report>>> Get()
+        public async Task<ActionResult<IEnumerable<ReportModel>>> Get()
         {
-            var user = _userAccessor.Get();
-            if (user == null)
-            {
-                _logger.LogWarning("User is empty in controller {Controller}, method ", nameof(ReportsController), nameof(Get));
-                return Problem(title: "User is empty");
-            }
+            if (GetUser(out var user) == false) return Problem(title: "User is empty");
+
             var query = new ReportsQuery
             {
-                ForUser = user.Login,
-                ForCompany = user.Company
+                User = user
             };
             var result = await _queryGate.HandleAsync<ReportsQuery, IEnumerable<Report>>(query);
-            return Ok(result);
+            return Ok(result.Select(r => r.FromDomain()));
         }
+
+        [HttpGet]
+        public async Task<ActionResult<ReportModel>> Get(string id)
+        {
+            if (GetUser(out var user) == false) return Problem(title: "User is empty");
+            var result = await _queryGate.HandleAsync<ReportQuery, Report>(new ReportQuery { Id = id, User = user });
+            return Ok(result.FromDomain());
+        }
+
+        private bool GetUser(out User user)
+        {
+            user = _userAccessor.Get();
+            if (user == null)
+            {
+                _logger.LogWarning("User is empty in controller {Controller}", nameof(ReportsController));
+                return false;
+            }
+            return true;
+        }
+
     }
 }

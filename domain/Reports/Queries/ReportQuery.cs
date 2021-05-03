@@ -1,11 +1,11 @@
-using Reboard.CQRS;
+﻿using Reboard.CQRS;
 using Reboard.Domain.Users;
-using System.Collections.Generic;
 
 namespace Reboard.Domain.Reports.Queries
 {
-    public class ReportsQuery : IQuery<IEnumerable<Report>>
+    public class ReportQuery : IQuery<Report>
     {
+        public string Id { get; set; }
         public User User { get; set; }
     }
 }

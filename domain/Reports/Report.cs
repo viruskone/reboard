@@ -14,5 +14,10 @@ namespace Reboard.Domain.Reports
         public string Shortcut { get; set; }
         public string[] AllowedUsers { get; set; }
         public string[] AllowedCompanies { get; set; }
+
+        public bool ReportAllowedForUser(object user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

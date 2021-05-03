@@ -20,14 +20,11 @@ namespace Reboard.App.Reports.QueryHandlers
         public async Task<IEnumerable<Report>> HandleAsync(ReportsQuery query)
         {
             var allReports = await _repository.GetAll();
-            var result = allReports.Where(report => ReportAllowedForAll(report) || ReportAllowedForUser(report, query));
+            var result = allReports.Where(report => report.ReportAllowedForUser(query.User));
             return result.ToList();
         }
 
-        private bool ReportAllowedForAll(Report report) => report.AllowedUsers.Contains("*");
-
-        private bool ReportAllowedForUser(Report report, ReportsQuery query) =>
-            report.AllowedUsers.Contains(query.ForUser)
-            || report.AllowedCompanies.Contains(query.ForCompany);
     }
+
+
 }
