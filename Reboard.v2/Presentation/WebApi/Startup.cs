@@ -9,8 +9,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Reboard.Core.Application.Identity;
+using Reboard.Core.Application.Users;
 using Reboard.Core.Domain.Base;
+using Reboard.Core.Domain.Users.OutboundServices;
 using Reboard.Infrastructure.Identity;
+using Reboard.Infrastructure.MongoDB;
 using Reboard.Presentation.WebApi.Exceptions;
 using Reboard.Presentation.WebApi.Options;
 using System.Text;
@@ -105,8 +108,10 @@ namespace Reboard.Presentation.WebApi
 
             services.AddMediatR(typeof(Core.Application.Users.EntryPoint).Assembly);
             // user defined
-            Core.Application.Users.EntryPoint.ConfigureUserServices(services);
+            services.AddUserApplication();
+            services.AddMongoDbRepositories(Configuration.GetValue("MongoConnection", ""), "reboard");
             services.AddSingleton<ITokenFactory>(_ => new JwtTokenFactory(appSettings.Secret));
+            services.AddSingleton<IHashService, Sha256HashService>();
         }
     }
 }

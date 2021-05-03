@@ -1,4 +1,4 @@
-using Reboard.Core.Application.Identity;
+using Reboard.Core.Domain.Users.OutboundServices;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;

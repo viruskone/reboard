@@ -43,12 +43,12 @@ namespace Reboard.Tests.WebApi.IntegrationTests
             var client = CreateClient();
 
             await GetService<IMediator>().Send(
-                new CreateUserCommand(nameof(create_user_and_authenticate), "qweasd77!")
+                new CreateUserCommand(nameof(create_user_and_try_authenticate_with_too_short_password), "qweasd77!")
             );
 
             var response = await client.PostAsJsonAsync("api/users/authenticate", new AuthenticateRequest
             {
-                Login = nameof(create_user_and_authenticate),
+                Login = nameof(create_user_and_try_authenticate_with_too_short_password),
                 Password = ""
             });
             var responseText = await response.Content.ReadAsStringAsync();

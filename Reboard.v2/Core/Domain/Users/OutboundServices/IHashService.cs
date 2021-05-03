@@ -1,4 +1,4 @@
-﻿namespace Reboard.Core.Application.Identity
+﻿namespace Reboard.Core.Domain.Users.OutboundServices
 {
     public interface IHashService
     {

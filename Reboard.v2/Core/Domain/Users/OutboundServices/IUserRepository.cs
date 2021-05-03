@@ -7,7 +7,5 @@ namespace Reboard.Core.Domain.Users.OutboundServices
         Task<User> Get(Login login);
 
         Task Save(User user);
-
-        Task<bool> ValidatePassword(Login login, Password password);
     }
 }

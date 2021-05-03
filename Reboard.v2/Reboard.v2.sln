@@ -35,11 +35,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Infrastructure\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Identity", "Core\Application\Identity\Identity.csproj", "{4929A28B-54D4-4A95-92E2-0592B08ABA44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users", "Presentation\Cmd\Users\Users.csproj", "{D44A288D-3B31-4799-ADDD-AEBCC940966E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users", "Presentation\Cmd\Users\Users.csproj", "{D44A288D-3B31-4799-ADDD-AEBCC940966E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cmd", "Cmd", "{DB06563E-6188-4410-8608-6A07E92B6C08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CmdBase", "Presentation\Cmd\CmdBase\CmdBase.csproj", "{22450541-6EF2-4457-BC12-2647ECF789F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CmdBase", "Presentation\Cmd\CmdBase\CmdBase.csproj", "{22450541-6EF2-4457-BC12-2647ECF789F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDB", "Infrastructure\MongoDB\MongoDB.csproj", "{8D181D45-02B5-47FC-823F-AAE8D0DF7B8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{22450541-6EF2-4457-BC12-2647ECF789F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22450541-6EF2-4457-BC12-2647ECF789F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22450541-6EF2-4457-BC12-2647ECF789F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D181D45-02B5-47FC-823F-AAE8D0DF7B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D181D45-02B5-47FC-823F-AAE8D0DF7B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D181D45-02B5-47FC-823F-AAE8D0DF7B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D181D45-02B5-47FC-823F-AAE8D0DF7B8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +121,7 @@ Global
 		{D44A288D-3B31-4799-ADDD-AEBCC940966E} = {DB06563E-6188-4410-8608-6A07E92B6C08}
 		{DB06563E-6188-4410-8608-6A07E92B6C08} = {53D69837-A4D2-499F-A2D5-3C9C5962C2EC}
 		{22450541-6EF2-4457-BC12-2647ECF789F5} = {DB06563E-6188-4410-8608-6A07E92B6C08}
+		{8D181D45-02B5-47FC-823F-AAE8D0DF7B8F} = {ABF6B505-E60C-4C3B-9F57-A1813C401D55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {083C52C0-63E1-4FD2-B0F8-2914963EA4F8}

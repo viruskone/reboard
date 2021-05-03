@@ -26,7 +26,7 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
 
-            var user = await User.CreateNew(rightLogin, rightPassword, uniqueChecker.Object);
+            var user = await User.CreateNew(rightLogin, Password.Make(rightPassword, new FakeHashService()), uniqueChecker.Object);
 
             user.Id.Should().NotBeEmpty();
         }
@@ -36,7 +36,7 @@ namespace Reboard.Tests.Domain.UnitTests
         {
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             var repository = new Mock<IUserRepository>();
-            var handler = new CreateUserHandler(uniqueChecker.Object, repository.Object);
+            var handler = new CreateUserHandler(uniqueChecker.Object, repository.Object, new FakeHashService());
             var request = new CreateUserCommand("some@domain.com", "veryhard4break");
 
             uniqueChecker.Setup(mock => mock.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
@@ -54,7 +54,7 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(false);
 
-            Func<Task> userAct = async () => await User.CreateNew(rightLogin, rightPassword, uniqueChecker.Object);
+            Func<Task> userAct = async () => await User.CreateNew(rightLogin, Password.Make(rightPassword, new FakeHashService()), uniqueChecker.Object);
 
             (await userAct.Should()
                 .ThrowAsync<ValidationErrorException>())
@@ -67,10 +67,10 @@ namespace Reboard.Tests.Domain.UnitTests
             var repository = new Mock<IUserRepository>();
             var tokenFactory = new Mock<ITokenFactory>();
             var tokenGenerator = new Mock<ITokenGenerator>();
-            var handler = new AuthenticateCommandHandler(repository.Object, tokenFactory.Object);
+            var handler = new AuthenticateCommandHandler(repository.Object, tokenFactory.Object, new FakeHashService());
             var request = new AuthenticateCommand("some@domain.com", "veryhard4break");
 
-            repository.Setup(mock => mock.ValidatePassword(It.IsAny<Login>(), It.IsAny<Password>())).ReturnsAsync(true);
+            repository.Setup(mock => mock.Get(It.IsAny<Login>())).ReturnsAsync(User.Make(request.Login, Password.MakeFromEncrypted(request.Password)));
             tokenFactory.Setup(mock => mock.Create()).Returns(tokenGenerator.Object);
 
             var result = await handler.Handle(request, CancellationToken.None);

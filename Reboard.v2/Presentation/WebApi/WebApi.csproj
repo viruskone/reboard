@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\Core\Application\Identity\Identity.csproj" />
     <ProjectReference Include="..\..\Core\Application\Users\Users.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Identity\Identity.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MongoDB\MongoDB.csproj" />
   </ItemGroup>
 
 </Project>

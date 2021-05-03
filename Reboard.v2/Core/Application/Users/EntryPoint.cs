@@ -6,7 +6,7 @@ namespace Reboard.Core.Application.Users
 {
     public static class EntryPoint
     {
-        public static void ConfigureUserServices(IServiceCollection services)
+        public static void AddUserApplication(this IServiceCollection services)
         {
             services.AddTransient<IUserUniqueLoginChecker, UserUniqueLoginChecker>();
         }

@@ -10,24 +10,27 @@ namespace Reboard.Core.Application.Users.Authenticate
 {
     public class AuthenticateCommandHandler : IRequestHandler<AuthenticateCommand, AuthenticateResponse>
     {
+        private readonly IHashService _hashService;
         private readonly ITokenFactory _tokenFactory;
         private readonly IUserRepository _userRepository;
 
-        public AuthenticateCommandHandler(IUserRepository userRepository, ITokenFactory tokenFactory)
+        public AuthenticateCommandHandler(IUserRepository userRepository, ITokenFactory tokenFactory, IHashService hashService)
         {
             _userRepository = userRepository;
             _tokenFactory = tokenFactory;
+            _hashService = hashService;
         }
 
         public async Task<AuthenticateResponse> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
         {
-            Login login = request.Login;
-            Password password = request.Password;
+            Password password = Password.Make(request.Password, _hashService);
 
-            var isValid = await _userRepository.ValidatePassword(login, password);
-            return isValid ?
-                Success(login) :
-                Failed();
+            var user = await _userRepository.Get(request.Login);
+            if (user == null) return Failed();
+
+            return user.Password == password ?
+                 Success(request.Login) :
+                 Failed();
         }
 
         private AuthenticateResponse Failed()

@@ -7,9 +7,6 @@ namespace Reboard.Core.Domain.Users
 {
     public class User : Entity
     {
-        public Login Login { get; }
-        public Password Password { get; }
-
         private User(Login login, Password password)
         {
             Login = login;
@@ -18,10 +15,16 @@ namespace Reboard.Core.Domain.Users
             Id = Guid.NewGuid();
         }
 
+        public Login Login { get; }
+        public Password Password { get; }
+
         public static async Task<User> CreateNew(Login login, Password password, IUserUniqueLoginChecker checker)
         {
             await RuleValidator.CheckRules(login.Value, new LoginMustBeUniqueRule(checker));
             return new User(login, password);
         }
+
+        public static User Make(Login login, Password password)
+            => new User(login, password);
     }
 }

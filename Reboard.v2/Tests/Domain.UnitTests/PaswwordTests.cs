@@ -1,7 +1,9 @@
 using FluentAssertions;
+using Moq;
 using Reboard.Core.Domain.Base;
 using Reboard.Core.Domain.Shared;
 using Reboard.Core.Domain.Users;
+using Reboard.Core.Domain.Users.OutboundServices;
 using System.Linq;
 using Xunit;
 
@@ -13,8 +15,8 @@ namespace Reboard.Tests.Domain.UnitTests
         public void correct_password_test()
         {
             var rightPassword = "qweasd77!";
-            var password = (Password)rightPassword;
-            password.Value.Should().Be(rightPassword);
+            var password = Password.Make(rightPassword, new FakeHashService());
+            password.EncryptedValue.Should().Be(rightPassword);
         }
 
         [Theory]
@@ -24,7 +26,7 @@ namespace Reboard.Tests.Domain.UnitTests
         {
             password.Invoking(s =>
             {
-                var pwd = (Password)s;
+                var pwd = Password.Make(s, new FakeHashService());
             }).Should().Throw<ValidationErrorException>()
             .Where(error => error.Errors.Any(error => error.Code == ValidationErrors.PasswordMinimumLength(1).Code));
         }

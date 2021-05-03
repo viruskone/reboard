@@ -9,19 +9,21 @@ namespace Reboard.Core.Application.Users.CreateUser
     public class CreateUserHandler : IRequestHandler<CreateUserCommand>
     {
         private readonly IUserUniqueLoginChecker _checker;
+        private readonly IHashService _hashService;
         private readonly IUserRepository _userRepository;
 
-        public CreateUserHandler(IUserUniqueLoginChecker checker, IUserRepository userRepository)
+        public CreateUserHandler(IUserUniqueLoginChecker checker, IUserRepository userRepository, IHashService hashService)
         {
             _checker = checker;
             _userRepository = userRepository;
+            _hashService = hashService;
         }
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var user = await User.CreateNew(
                 request.Login,
-                request.Password,
+                Password.Make(request.Password, _hashService),
                 _checker);
             await _userRepository.Save(user);
             return Unit.Value;

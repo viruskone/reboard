@@ -1,33 +1,36 @@
 ﻿using Reboard.Core.Domain.Base;
 using Reboard.Core.Domain.Shared;
+using Reboard.Core.Domain.Users.OutboundServices;
+using System;
 using System.Collections.Generic;
 
 namespace Reboard.Core.Domain.Users
 {
     public class Password : ValueObject
     {
-        public string Value { get; }
-
         private Password(string value)
         {
-            Value = value;
+            EncryptedValue = value;
         }
 
-        public static Password Make(string value)
+        public string EncryptedValue { get; }
+
+        public static implicit operator string(Password password) => password.EncryptedValue;
+
+        public static Password Make(string value, IHashService hashService)
         {
             RuleValidator.CheckRules(value,
                 new MinimumLengthRule(Constraints.PasswordMinimumLength, () => ValidationErrors.PasswordMinimumLength(Constraints.PasswordMinimumLength))
             );
-            return new Password(value);
+            return new Password(hashService.Encrypt(value));
         }
 
-        public static implicit operator Password(string value) => Make(value);
-
-        public static implicit operator string(Password password) => password.Value;
+        public static Password MakeFromEncrypted(string encryptedvalue)
+            => new Password(encryptedvalue);
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value;
+            yield return EncryptedValue;
         }
     }
 }
