@@ -1,4 +1,0 @@
-C:\Users\adria\source\repos\viruskone\reboard\Reboard.v2\Users\obj\Debug\netstandard2.1\Users.csprojAssemblyReference.cache
-C:\Users\adria\source\repos\viruskone\reboard\Reboard.v2\Users\obj\Debug\netstandard2.1\Users.AssemblyInfoInputs.cache
-C:\Users\adria\source\repos\viruskone\reboard\Reboard.v2\Users\obj\Debug\netstandard2.1\Users.AssemblyInfo.cs
-C:\Users\adria\source\repos\viruskone\reboard\Reboard.v2\Users\obj\Debug\netstandard2.1\Users.csproj.CoreCompileInputs.cache
