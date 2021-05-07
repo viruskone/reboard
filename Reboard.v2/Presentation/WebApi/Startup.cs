@@ -39,12 +39,15 @@ namespace Reboard.Presentation.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
+            } else {
+                app.UseHttpsRedirection();
             }
+
             app.UseProblemDetails();
 
-            app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -63,7 +66,17 @@ namespace Reboard.Presentation.WebApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Reboard WebApi", Version = "v1" });
                 c.EnableAnnotations();
             });
-
+            services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(policy =>
+                    {
+                        policy
+                            .WithOrigins("http://localhost:3000")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("Location");
+                    });
+            });
             services.AddControllers();
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
