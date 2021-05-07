@@ -1,12 +1,16 @@
 ﻿using Reboard.Core.Domain.Base;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;
-using System.Threading.Tasks;
+using static Reboard.Core.Domain.Base.Rules.BusinessRuleValidator;
 
 namespace Reboard.Core.Domain.Users
 {
     public class User : Entity
     {
+        public Login Login { get; }
+
+        public Password Password { get; }
+
         private User(Login login, Password password)
         {
             Login = login;
@@ -15,12 +19,9 @@ namespace Reboard.Core.Domain.Users
             Id = Guid.NewGuid();
         }
 
-        public Login Login { get; }
-        public Password Password { get; }
-
-        public static async Task<User> CreateNew(Login login, Password password, IUserUniqueLoginChecker checker)
+        public static User CreateNew(Login login, Password password, IUserUniqueLoginChecker checker)
         {
-            await RuleValidator.CheckRules(login.Value, new LoginMustBeUniqueRule(checker));
+            CheckRule(new LoginMustBeUniqueRule(checker, login));
             return new User(login, password);
         }
 

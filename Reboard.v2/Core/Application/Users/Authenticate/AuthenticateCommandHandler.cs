@@ -23,7 +23,7 @@ namespace Reboard.Core.Application.Users.Authenticate
 
         public async Task<AuthenticateResponse> Handle(AuthenticateCommand request, CancellationToken cancellationToken)
         {
-            Password password = Password.Make(request.Password, _hashService);
+            Password password = Password.MakeNew(request.Password, _hashService);
 
             var user = await _userRepository.Get(request.Login);
             if (user == null) return Failed();

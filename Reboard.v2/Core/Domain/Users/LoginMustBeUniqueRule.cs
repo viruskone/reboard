@@ -1,23 +1,21 @@
-﻿using Reboard.Core.Domain.Base;
-using Reboard.Core.Domain.Base.Errors;
-using Reboard.Core.Domain.Shared;
+﻿using Reboard.Core.Domain.Base.Rules;
 using Reboard.Core.Domain.Users.OutboundServices;
-using System.Threading.Tasks;
 
 namespace Reboard.Core.Domain.Users
 {
-    internal class LoginMustBeUniqueRule : IAsyncValidationRule<string>
+    public class LoginMustBeUniqueRule : IBusinessRule
     {
+        private readonly Login _login;
         private IUserUniqueLoginChecker _checker;
+        public string Message => $"{_login} already exist";
 
-        public LoginMustBeUniqueRule(IUserUniqueLoginChecker checker)
+        public LoginMustBeUniqueRule(IUserUniqueLoginChecker checker, Login login)
         {
             _checker = checker;
+            _login = login;
         }
 
-        public ValidationError GetError() => ValidationErrors.LoginMustBeUnique();
-
-        public async Task<bool> IsBroken(string value)
-            => (await _checker.IsUnique(value)) == false;
+        public bool IsBroken()
+            => _checker.IsUnique(_login).Result == false;
     }
 }

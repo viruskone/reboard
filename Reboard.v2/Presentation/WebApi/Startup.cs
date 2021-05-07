@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Reboard.Core.Application.Identity;
 using Reboard.Core.Application.Users;
 using Reboard.Core.Domain.Base;
+using Reboard.Core.Domain.Base.Rules;
 using Reboard.Core.Domain.Users.OutboundServices;
 using Reboard.Infrastructure.Identity;
 using Reboard.Infrastructure.MongoDB;
@@ -23,12 +24,12 @@ namespace Reboard.Presentation.WebApi
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -103,7 +104,7 @@ namespace Reboard.Presentation.WebApi
 
             services.AddProblemDetails(x =>
             {
-                x.Map<ValidationErrorException>(ex => new ValidationErrorProblemDetails(ex));
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
 
             services.AddMediatR(typeof(Core.Application.Users.EntryPoint).Assembly);

@@ -3,8 +3,7 @@ using Moq;
 using Reboard.Core.Application.Identity;
 using Reboard.Core.Application.Users.Authenticate;
 using Reboard.Core.Application.Users.CreateUser;
-using Reboard.Core.Domain.Base;
-using Reboard.Core.Domain.Shared;
+using Reboard.Core.Domain.Base.Rules;
 using Reboard.Core.Domain.Users;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;
@@ -18,21 +17,7 @@ namespace Reboard.Tests.Domain.UnitTests
     public class UserTests
     {
         [Fact]
-        public async Task correct_user_test()
-        {
-            var rightPassword = "qweasd77!";
-            var rightLogin = "user@domain.com";
-
-            var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
-            uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
-
-            var user = await User.CreateNew(rightLogin, Password.Make(rightPassword, new FakeHashService()), uniqueChecker.Object);
-
-            user.Id.Should().NotBeEmpty();
-        }
-
-        [Fact]
-        public async Task create_user_handler()
+        public async Task commandhandler_create_user()
         {
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             var repository = new Mock<IUserRepository>();
@@ -46,7 +31,21 @@ namespace Reboard.Tests.Domain.UnitTests
         }
 
         [Fact]
-        public async Task duplicate_user_test()
+        public void domain_create_user()
+        {
+            var rightPassword = "qweasd77!";
+            var rightLogin = "user@domain.com";
+
+            var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
+            uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
+
+            var user = User.CreateNew(rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), uniqueChecker.Object);
+
+            user.Id.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public void domain_duplicate_user()
         {
             var rightPassword = "qweasd77!";
             var rightLogin = "user@domain.com";
@@ -54,15 +53,15 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(false);
 
-            Func<Task> userAct = async () => await User.CreateNew(rightLogin, Password.Make(rightPassword, new FakeHashService()), uniqueChecker.Object);
+            Action userAct = () => User.CreateNew(rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), uniqueChecker.Object);
 
-            (await userAct.Should()
-                .ThrowAsync<ValidationErrorException>())
-                .Where(exception => exception.Errors.Any(error => error.Code == ValidationErrors.LoginMustBeUnique().Code));
+            (userAct.Should()
+                .Throw<BusinessRuleValidationException>())
+                .Where(exception => exception.BrokenRule.GetType() == typeof(LoginMustBeUniqueRule));
         }
 
         [Fact]
-        public async Task success_authenticate()
+        public async Task handler_success_authenticate()
         {
             var repository = new Mock<IUserRepository>();
             var tokenFactory = new Mock<ITokenFactory>();

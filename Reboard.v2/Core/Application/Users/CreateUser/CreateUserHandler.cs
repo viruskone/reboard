@@ -21,9 +21,9 @@ namespace Reboard.Core.Application.Users.CreateUser
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await User.CreateNew(
+            var user = User.CreateNew(
                 request.Login,
-                Password.Make(request.Password, _hashService),
+                Password.MakeNew(request.Password, _hashService),
                 _checker);
             await _userRepository.Save(user);
             return Unit.Value;
