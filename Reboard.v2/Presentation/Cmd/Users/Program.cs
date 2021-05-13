@@ -18,9 +18,10 @@ namespace Reboard.Presentation.Cmd.Users
         {
             var email = methods.Ask("e-mail");
             var password = methods.Ask("password");
+            var company = methods.Ask("company");
 
             methods.Processing();
-            await _mediator.Send(new CreateUserCommand(email, password));
+            await _mediator.Send(new CreateUserCommand(email, password, company));
         }
 
         private static async Task Main(string[] args)

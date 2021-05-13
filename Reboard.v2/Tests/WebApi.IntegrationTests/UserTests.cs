@@ -25,7 +25,7 @@ namespace Reboard.Tests.WebApi.IntegrationTests
             var client = CreateClient();
 
             await GetService<IMediator>().Send(
-                new CreateUserCommand(nameof(create_user_and_authenticate), "qweasd77!")
+                new CreateUserCommand(nameof(create_user_and_authenticate), "qweasd77!", "INC")
             );
 
             var auth = await ExecuteCommandAndGetResult<AuthenticateRequest, AuthenticateResponse>(client, "api/users/authenticate", new AuthenticateRequest
@@ -43,7 +43,7 @@ namespace Reboard.Tests.WebApi.IntegrationTests
             var client = CreateClient();
 
             await GetService<IMediator>().Send(
-                new CreateUserCommand(nameof(create_user_and_try_authenticate_with_too_short_password), "qweasd77!")
+                new CreateUserCommand(nameof(create_user_and_try_authenticate_with_too_short_password), "qweasd77!", "INC")
             );
 
             var response = await client.PostAsJsonAsync("api/users/authenticate", new AuthenticateRequest
@@ -52,7 +52,7 @@ namespace Reboard.Tests.WebApi.IntegrationTests
                 Password = ""
             });
             var responseText = await response.Content.ReadAsStringAsync();
-            response.StatusCode.Should().Be(StatusCodes.Status422UnprocessableEntity);
+            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
     }
 }

@@ -16,6 +16,6 @@ namespace Reboard.Core.Domain.Reports.Rules
         }
 
         public bool IsBroken()
-            => _checker.IsUnique(_title).Result == false;
+            => string.IsNullOrEmpty(_title) || _checker.IsUnique(_title).Result == false;
     }
 }

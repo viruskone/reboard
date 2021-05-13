@@ -20,14 +20,17 @@ namespace Reboard.Tests.Domain.UnitTests
         public async Task commandhandler_create_user()
         {
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
+            var companyUniqueChecker = new Mock<ICompanyUniqueNameChecker>();
             var repository = new Mock<IUserRepository>();
-            var handler = new CreateUserHandler(uniqueChecker.Object, repository.Object, new FakeHashService());
-            var request = new CreateUserCommand("some@domain.com", "veryhard4break");
+            var handler = new CreateUserHandler(uniqueChecker.Object, repository.Object, new FakeHashService(), companyUniqueChecker.Object);
+            var request = new CreateUserCommand("some@domain.com", "veryhard4break!", "INC");
 
             uniqueChecker.Setup(mock => mock.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
+            companyUniqueChecker.Setup(mock => mock.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
             await handler.Handle(request, CancellationToken.None);
 
             repository.Verify(mock => mock.Save(It.Is<User>(user => user.Login == request.Login && user.Password == request.Password)));
+            repository.Verify(mock => mock.Save(It.Is<Company>(company => company.Name == request.CompanyName)));
         }
 
         [Fact]
@@ -39,9 +42,9 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
 
-            var user = User.CreateNew(rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), uniqueChecker.Object);
+            var user = User.CreateNew((Login)rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), Company.Make((CompanyId)Guid.NewGuid(), (CompanyName)"INC"), uniqueChecker.Object);
 
-            user.Id.Should().NotBeEmpty();
+            user.Id.Value.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -53,7 +56,7 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(false);
 
-            Action userAct = () => User.CreateNew(rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), uniqueChecker.Object);
+            Action userAct = () => User.CreateNew((Login)rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), Company.Make((CompanyId)Guid.NewGuid(), (CompanyName)"INC"), uniqueChecker.Object);
 
             (userAct.Should()
                 .Throw<BusinessRuleValidationException>())
@@ -67,9 +70,9 @@ namespace Reboard.Tests.Domain.UnitTests
             var tokenFactory = new Mock<ITokenFactory>();
             var tokenGenerator = new Mock<ITokenGenerator>();
             var handler = new AuthenticateCommandHandler(repository.Object, tokenFactory.Object, new FakeHashService());
-            var request = new AuthenticateCommand("some@domain.com", "veryhard4break");
+            var request = new AuthenticateCommand("some@domain.com", "veryhard4break!");
 
-            repository.Setup(mock => mock.Get(It.IsAny<Login>())).ReturnsAsync(User.Make(request.Login, Password.MakeFromEncrypted(request.Password)));
+            repository.Setup(mock => mock.Get(It.IsAny<Login>())).ReturnsAsync(User.Make(Guid.NewGuid(), (Login)request.Login, Password.MakeFromEncrypted(request.Password), Company.Make((CompanyId)Guid.NewGuid(), (CompanyName)"INC")));
             tokenFactory.Setup(mock => mock.Create()).Returns(tokenGenerator.Object);
 
             var result = await handler.Handle(request, CancellationToken.None);

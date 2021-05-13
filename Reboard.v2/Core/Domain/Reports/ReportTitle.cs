@@ -1,6 +1,7 @@
 ﻿using Reboard.Core.Domain.Base;
-using System;
+using Reboard.Core.Domain.Shared.Rules;
 using System.Collections.Generic;
+using static Reboard.Core.Domain.Base.Rules.RuleValidator;
 
 namespace Reboard.Core.Domain.Reports
 {
@@ -19,6 +20,7 @@ namespace Reboard.Core.Domain.Reports
 
         public static ReportTitle Make(string value)
         {
+            CheckRule(new NotEmptyRule(value));
             return new ReportTitle(value);
         }
 

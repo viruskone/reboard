@@ -9,6 +9,7 @@ namespace Reboard.Core.Application.Users
         public static void AddUserApplication(this IServiceCollection services)
         {
             services.AddTransient<IUserUniqueLoginChecker, UserUniqueLoginChecker>();
+            services.AddTransient<ICompanyUniqueNameChecker, CompanyUniqueNameChecker>();
         }
     }
 }

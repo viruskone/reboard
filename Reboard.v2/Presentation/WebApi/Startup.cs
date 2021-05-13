@@ -39,12 +39,13 @@ namespace Reboard.Presentation.WebApi
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
-            } else {
+            }
+            else
+            {
                 app.UseHttpsRedirection();
             }
 
             app.UseProblemDetails();
-
 
             app.UseRouting();
             app.UseCors();
@@ -76,7 +77,7 @@ namespace Reboard.Presentation.WebApi
                             .AllowAnyHeader()
                             .WithExposedHeaders("Location");
                     });
-            });
+                });
             services.AddControllers();
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -118,6 +119,7 @@ namespace Reboard.Presentation.WebApi
             services.AddProblemDetails(x =>
             {
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+                x.Map<ConstructDomainObjectRuleValidationException>(ex => new ConstructDomainObjectRuleValidationExceptionProblemDetails(ex));
             });
 
             services.AddMediatR(typeof(Core.Application.Users.EntryPoint).Assembly);

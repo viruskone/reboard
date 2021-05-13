@@ -25,11 +25,11 @@ namespace Reboard.Core.Application.Users.Authenticate
         {
             Password password = Password.MakeNew(request.Password, _hashService);
 
-            var user = await _userRepository.Get(request.Login);
+            var user = await _userRepository.Get((Login)request.Login);
             if (user == null) return Failed();
 
             return user.Password == password ?
-                 Success(request.Login) :
+                 Success((Login)request.Login) :
                  Failed();
         }
 
