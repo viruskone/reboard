@@ -11,6 +11,11 @@ namespace Reboard.Core.Application.Reports.GetReports
     {
         private readonly IReportRepository _repository;
 
+        public GetReportsQueryHandler(IReportRepository repository)
+        {
+            _repository = repository;
+        }
+
         public async Task<IEnumerable<ReportDto>> Handle(GetReportsQuery request, CancellationToken cancellationToken)
         {
             var reportsByUser = await _repository.GetByUser(request.UserId);

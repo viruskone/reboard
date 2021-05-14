@@ -3,7 +3,6 @@ using MediatR;
 using Reboard.Core.Application.Colors;
 using Reboard.Core.Application.Reports;
 using Reboard.Core.Application.Reports.CreateReport;
-using Reboard.Core.Domain.Reports;
 using Reboard.Core.Domain.Users;
 using Reboard.Core.Domain.Users.OutboundServices;
 using Reboard.Presentation.Cmd.CmdBase;
@@ -53,31 +52,34 @@ namespace Reports
         private async Task CreateReport(string forUser, string forCompany)
         {
             var color = _generator.GetContrastedColor(_contrastColor, 1.8);
-
+            var users = await GetUserIds(forUser);
+            var companies = await GetCompanyIds(forCompany);
             var request = new CreateReportCommand(
                 _faker.Lorem.Sentence(),
                 _faker.Lorem.Sentence(10, 20),
                 _generator.GetContrastRatio(_contrastColor, color).ToString("F2"),
                 new ColorDto(color.Red, color.Green, color.Blue),
-                (await GetUserIds(forUser)).Select(uid => uid.Value).ToArray(),
-                (await GetCompanyIds(forCompany)).Select(uid => uid.Value).ToArray());
+                users.Select(uid => uid.Value).ToArray(),
+                companies.Select(uid => uid.Value).ToArray());
             await _mediator.Send(request);
         }
 
         private async Task<IEnumerable<CompanyId>> GetCompanyIds(string forCompanies)
         {
-            var usersLogin = forCompanies.Split(",").Select(s => s.Trim());
-            var tasks = usersLogin.Select(name =>
-                _userRepository.GetCompany((CompanyName)name));
+            if(string.IsNullOrWhiteSpace(forCompanies)) return new CompanyId[0];
+            var companies = forCompanies.Split(",").Select(s => s.Trim());
+            var tasks = companies.Select(async companyName =>
+                await _userRepository.GetCompany((CompanyName)companyName));
             await Task.WhenAll(tasks);
             return tasks.Select(t => t.Result.Id);
         }
 
         private async Task<IEnumerable<UserId>> GetUserIds(string forUser)
         {
+            if(string.IsNullOrWhiteSpace(forUser)) return new UserId[0];
             var usersLogin = forUser.Split(",").Select(s => s.Trim());
-            var tasks = usersLogin.Select(login =>
-                _userRepository.Get((Login)login));
+            var tasks = usersLogin.Select(async login =>
+                await _userRepository.Get((Login)login));
             await Task.WhenAll(tasks);
             return tasks.Select(t => t.Result.Id);
         }
