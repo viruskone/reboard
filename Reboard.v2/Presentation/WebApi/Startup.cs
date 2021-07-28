@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using Reboard.Core.Application.Identity;
 using Reboard.Core.Application.Reports;
 using Reboard.Core.Application.Users;
+using Reboard.Core.Application.Reports;
 using Reboard.Core.Domain.Base;
 using Reboard.Core.Domain.Base.Rules;
 using Reboard.Core.Domain.Users.OutboundServices;
