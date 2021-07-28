@@ -4,12 +4,11 @@ using Reboard.Core.Domain.Reports.Rules;
 using Reboard.Core.Domain.Shared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using static Reboard.Core.Domain.Base.Rules.RuleValidator;
 
 namespace Reboard.Core.Domain.Reports
 {
-    public class Report : Entity
+    public class Report : Entity<ReportId>
     {
         private readonly List<CompanyId> _allowedCompanies = new List<CompanyId>();
         private readonly List<UserId> _allowedUsers = new List<UserId>();
@@ -20,11 +19,10 @@ namespace Reboard.Core.Domain.Reports
         public DateTime CreateTime { get; }
         public string Description { get; }
         public int DownloadTimes { get; }
-        public ReportId Id { get; }
         public ReportShortcut Shortcut { get; }
         public ReportTitle Title { get; }
 
-        private Report(ReportTitle title, string description, string shortcut, Color color)
+        private Report(ReportTitle title, string description, ReportShortcut shortcut, Color color)
         {
             Title = title;
             Description = description;

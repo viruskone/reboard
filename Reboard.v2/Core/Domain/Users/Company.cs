@@ -1,13 +1,13 @@
 ﻿using Reboard.Core.Domain.Base;
+using Reboard.Core.Domain.Shared;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;
 using static Reboard.Core.Domain.Base.Rules.RuleValidator;
 
 namespace Reboard.Core.Domain.Users
 {
-    public class Company : Entity
+    public class Company : Entity<CompanyId>
     {
-        public CompanyId Id { get; }
         public CompanyName Name { get; }
 
         private Company(CompanyName name)

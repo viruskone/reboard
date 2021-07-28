@@ -3,6 +3,7 @@ using Reboard.Core.Application.Identity;
 using Reboard.Core.Domain.Users;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,17 +30,18 @@ namespace Reboard.Core.Application.Users.Authenticate
             if (user == null) return Failed();
 
             return user.Password == password ?
-                 Success((Login)request.Login) :
+                 Success(user) :
                  Failed();
         }
 
         private AuthenticateResponse Failed()
             => new AuthenticateResponse { Status = AuthenticateStatus.Failed };
 
-        private AuthenticateResponse Success(Login login)
+        private AuthenticateResponse Success(User user)
         {
             var token = _tokenFactory.Create();
-            token.SetName(login);
+            token.SetName(user.Login);
+            token.AddClaim("user", JsonSerializer.Serialize(new UserClaims { UserId = user.Id, CompanyId = user.Company.Id }));
             token.SetExpiration(TimeSpan.FromDays(7));
             return new AuthenticateResponse
             {

@@ -14,7 +14,7 @@ namespace Reboard.Core.Domain.Reports
             Value = value;
         }
 
-        public static implicit operator ReportShortcut(string value) => Make(value);
+        public static explicit operator ReportShortcut(string value) => Make(value);
 
         public static implicit operator string(ReportShortcut title) => title.Value;
 

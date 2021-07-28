@@ -2,51 +2,32 @@
 
 namespace Reboard.Core.Domain.Base
 {
-    public class Entity
+    public class Entity<TId>
+        where TId : OneValueObject<Guid>
     {
-    }
-
-    public abstract class OneValueObject<TValue> : IEquatable<OneValueObject<TValue>> where TValue : IEquatable<TValue>
-    {
-        public TValue Value { get; }
-
-        protected OneValueObject(TValue value)
-        {
-            Value = value;
-        }
-
-        public static bool operator !=(OneValueObject<TValue> x, OneValueObject<TValue> y)
-        {
-            return !(x == y);
-        }
-
-        public static bool operator ==(OneValueObject<TValue> obj1, OneValueObject<TValue> obj2)
-        {
-            if (object.Equals(obj1, null))
-            {
-                if (object.Equals(obj2, null))
-                {
-                    return true;
-                }
-                return false;
-            }
-            return obj1.Equals(obj2);
-        }
+        public TId Id { get; protected set; }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is OneValueObject<TValue> other && Equals(other);
-        }
+            if (obj == null)
+                return false;
 
-        public bool Equals(OneValueObject<TValue> other)
-        {
-            return this.Value.Equals(other.Value);
+            if (GetType() != obj.GetType())
+                return false;
+
+            var entity = (Entity<TId>)obj;
+
+            return Id.Equals(entity.Id);
         }
 
         public override int GetHashCode()
         {
-            return Value.GetHashCode();
+            unchecked
+            {
+                int hash = 13;
+                hash = (hash * 7) + Id.GetHashCode();
+                return hash;
+            }
         }
     }
 }

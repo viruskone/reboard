@@ -1,4 +1,5 @@
-﻿using Reboard.Core.Domain.Users;
+﻿using Reboard.Core.Domain.Shared;
+using Reboard.Core.Domain.Users;
 
 namespace Reboard.Infrastructure.MongoDB.Users
 {
@@ -11,7 +12,7 @@ namespace Reboard.Infrastructure.MongoDB.Users
 
         public static Company FromDto(this CompanyDto dto)
             => dto != null ?
-                Company.Make((CompanyId)dto.Id, (CompanyName)dto.Name) :
+                Company.Make(dto.Id, (CompanyName)dto.Name) :
                 null;
 
         public static CompanyDto ToDto(this Company company)

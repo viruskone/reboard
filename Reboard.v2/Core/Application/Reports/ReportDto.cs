@@ -11,7 +11,7 @@ namespace Reboard.Core.Application.Reports.GetReports
         public string Description { get; set; }
         public int DownloadTimes { get; set; }
         public Guid Id { get; set; }
-        public ReportShortcut Shortcut { get; set; }
-        public ReportTitle Title { get; set; }
+        public string Shortcut { get; set; }
+        public string Title { get; set; }
     }
 }

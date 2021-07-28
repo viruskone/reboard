@@ -1,14 +1,14 @@
 ﻿using Reboard.Core.Domain.Base;
+using Reboard.Core.Domain.Shared;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;
 using static Reboard.Core.Domain.Base.Rules.RuleValidator;
 
 namespace Reboard.Core.Domain.Users
 {
-    public class User : Entity
+    public class User : Entity<UserId>
     {
         public Company Company { get; }
-        public UserId Id { get; }
         public Login Login { get; }
 
         public Password Password { get; }
@@ -19,12 +19,12 @@ namespace Reboard.Core.Domain.Users
             Password = password;
             Company = company;
 
-            Id = Guid.NewGuid();
+            Id = UserId.Make(Guid.NewGuid());
         }
 
         private User(Guid id, Login login, Password password, Company company)
         {
-            Id = id;
+            Id = UserId.Make(id);
             Login = login;
             Password = password;
             Company = company;

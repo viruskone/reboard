@@ -1,7 +1,11 @@
 ﻿using FluentAssertions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Reboard.Core.Application.Users.Authenticate;
+using Reboard.Core.Application.Users.CreateUser;
+using Reboard.Core.Domain.Reports.OutboundServices;
 using Reboard.Core.Domain.Users.OutboundServices;
 using Reboard.Presentation.WebApi;
 using Reboard.Tests.WebApi.IntegrationTests.Mocks;
@@ -19,14 +23,53 @@ namespace Reboard.Tests.WebApi.IntegrationTests
     {
         private readonly WebApplicationFactory<Startup> _factory;
 
+        protected MemoryReportRepository ReportRepository { get; } = new MemoryReportRepository();
+        protected MemoryUserRepository UserRepository { get; } = new MemoryUserRepository();
+
         public IntegrationTestBase(WebApplicationFactory<Startup> factory, ITestOutputHelper outputHelper, Action<IServiceCollection> configureServices = null)
         {
-            _factory = PrepareFactory(factory, Concat(s => ConfigureRepositoryServices(s, outputHelper), configureServices));
+            _factory = PrepareFactory(factory, Concat(
+                s => ConfigureRepositoryServices(s),
+                s => s.AddLogging(x => x.AddXUnit(outputHelper)),
+                configureServices));
+        }
+
+        protected async Task<HttpClient> CreateAuthenticatedClient(string login, string company, string password)
+        {
+            await GetService<IMediator>().Send(
+                new CreateUserCommand(login, password, company)
+            );
+            var httpClient = CreateClient();
+            var auth = await ExecuteCommandAndGetResult<AuthenticateRequest, AuthenticateResponse>(httpClient, "api/users/authenticate", new AuthenticateRequest
+            {
+                Login = login,
+                Password = password
+            }, true);
+            auth.Status.Should().Be(AuthenticateStatus.Success);
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.Token);
+            return httpClient;
+        }
+
+        protected HttpClient CreateClient() => _factory.CreateClient();
+
+        protected async Task<TResult> ExecuteCommandAndGetResult<TRequest, TResult>(HttpClient client, string commandUrl, TRequest commandPayload, bool withoutAcceptedStatus = false)
+        {
+            var response = await client.PostAsJsonAsync(commandUrl, commandPayload);
+            if (withoutAcceptedStatus)
+            {
+                response.StatusCode.Should().Be(HttpStatusCode.OK, await response.Content.ReadAsStringAsync());
+                return await response.Content.ReadAsAsync<TResult>();
+            }
+            response.StatusCode.Should().Be(HttpStatusCode.Accepted, await response.Content.ReadAsStringAsync());
+
+            response = await WaitWhenCommandExecuted(client, response.Headers.Location);
+
+            var result = await client.GetAsync(response.Headers.Location);
+            response.StatusCode.Should().Be(HttpStatusCode.Created, await response.Content.ReadAsStringAsync());
+            return await result.Content.ReadAsAsync<TResult>();
         }
 
         protected T GetService<T>() => _factory.Services.GetService<T>();
-
-        protected HttpClient CreateClient() => _factory.CreateClient();
 
         //protected async Task<HttpClient> CreateAuthenticatedClient(string login = "Example@domain.com", string password = "123")
         //{
@@ -76,46 +119,6 @@ namespace Reboard.Tests.WebApi.IntegrationTests
         //    return await wsClient.ConnectAsync(wsUri.Uri, CancellationToken.None);
         //}
 
-        private Action<T> Concat<T>(params Action<T>[] actions)
-            => x =>
-            {
-                foreach (var action in actions)
-                {
-                    action?.Invoke(x);
-                }
-            };
-
-        private WebApplicationFactory<Startup> PrepareFactory(WebApplicationFactory<Startup> factory, Action<IServiceCollection> configureServices) =>
-            factory
-                .WithWebHostBuilder(configuration =>
-                {
-                    configuration.ConfigureServices(configureServices);
-                });
-
-        private void ConfigureRepositoryServices(IServiceCollection services, ITestOutputHelper outputHelper)
-        {
-            services.AddTransient<IUserRepository, MemoryUserRepository>();
-            //services.AddTransient<IAuthRepository>(_ => AuthRepository);
-            services.AddLogging(x => x.AddXUnit(outputHelper));
-        }
-
-        protected async Task<TResult> ExecuteCommandAndGetResult<TRequest, TResult>(HttpClient client, string commandUrl, TRequest commandPayload, bool withoutAcceptedStatus = false)
-        {
-            var response = await client.PostAsJsonAsync(commandUrl, commandPayload);
-            if (withoutAcceptedStatus)
-            {
-                response.StatusCode.Should().Be(HttpStatusCode.OK, await response.Content.ReadAsStringAsync());
-                return await response.Content.ReadAsAsync<TResult>();
-            }
-            response.StatusCode.Should().Be(HttpStatusCode.Accepted, await response.Content.ReadAsStringAsync());
-
-            response = await WaitWhenCommandExecuted(client, response.Headers.Location);
-
-            var result = await client.GetAsync(response.Headers.Location);
-            response.StatusCode.Should().Be(HttpStatusCode.Created, await response.Content.ReadAsStringAsync());
-            return await result.Content.ReadAsAsync<TResult>();
-        }
-
         protected async Task<HttpResponseMessage> WaitWhenCommandExecuted(HttpClient client, Uri checkStatusUri)
         {
             while (true)
@@ -127,5 +130,27 @@ namespace Reboard.Tests.WebApi.IntegrationTests
                     return response;
             }
         }
+
+        private Action<T> Concat<T>(params Action<T>[] actions)
+                    => x =>
+            {
+                foreach (var action in actions)
+                {
+                    action?.Invoke(x);
+                }
+            };
+
+        private void ConfigureRepositoryServices(IServiceCollection services)
+        {
+            services.AddSingleton<IUserRepository>(UserRepository);
+            services.AddSingleton<IReportRepository>(ReportRepository);
+        }
+
+        private WebApplicationFactory<Startup> PrepareFactory(WebApplicationFactory<Startup> factory, Action<IServiceCollection> configureServices) =>
+                    factory
+                .WithWebHostBuilder(configuration =>
+                {
+                    configuration.ConfigureServices(configureServices);
+                });
     }
 }

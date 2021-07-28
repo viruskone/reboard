@@ -4,6 +4,7 @@ using Reboard.Core.Application.Identity;
 using Reboard.Core.Application.Users.Authenticate;
 using Reboard.Core.Application.Users.CreateUser;
 using Reboard.Core.Domain.Base.Rules;
+using Reboard.Core.Domain.Shared;
 using Reboard.Core.Domain.Users;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;
@@ -42,7 +43,7 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(true);
 
-            var user = User.CreateNew((Login)rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), Company.Make((CompanyId)Guid.NewGuid(), (CompanyName)"INC"), uniqueChecker.Object);
+            var user = User.CreateNew((Login)rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), Company.Make(Guid.NewGuid(), (CompanyName)"INC"), uniqueChecker.Object);
 
             user.Id.Value.Should().NotBeEmpty();
         }
@@ -56,7 +57,7 @@ namespace Reboard.Tests.Domain.UnitTests
             var uniqueChecker = new Mock<IUserUniqueLoginChecker>();
             uniqueChecker.Setup(checker => checker.IsUnique(It.IsAny<string>())).ReturnsAsync(false);
 
-            Action userAct = () => User.CreateNew((Login)rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), Company.Make((CompanyId)Guid.NewGuid(), (CompanyName)"INC"), uniqueChecker.Object);
+            Action userAct = () => User.CreateNew((Login)rightLogin, Password.MakeNew(rightPassword, new FakeHashService()), Company.Make(Guid.NewGuid(), (CompanyName)"INC"), uniqueChecker.Object);
 
             (userAct.Should()
                 .Throw<BusinessRuleValidationException>())
@@ -72,7 +73,7 @@ namespace Reboard.Tests.Domain.UnitTests
             var handler = new AuthenticateCommandHandler(repository.Object, tokenFactory.Object, new FakeHashService());
             var request = new AuthenticateCommand("some@domain.com", "veryhard4break!");
 
-            repository.Setup(mock => mock.Get(It.IsAny<Login>())).ReturnsAsync(User.Make(Guid.NewGuid(), (Login)request.Login, Password.MakeFromEncrypted(request.Password), Company.Make((CompanyId)Guid.NewGuid(), (CompanyName)"INC")));
+            repository.Setup(mock => mock.Get(It.IsAny<Login>())).ReturnsAsync(User.Make(Guid.NewGuid(), (Login)request.Login, Password.MakeFromEncrypted(request.Password), Company.Make(Guid.NewGuid(), (CompanyName)"INC")));
             tokenFactory.Setup(mock => mock.Create()).Returns(tokenGenerator.Object);
 
             var result = await handler.Handle(request, CancellationToken.None);

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Reboard.Core.Domain.Shared;
 using Reboard.Core.Domain.Users;
 using Reboard.Core.Domain.Users.OutboundServices;
 using System;

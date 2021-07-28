@@ -9,9 +9,9 @@ namespace Reboard.Infrastructure.MongoDB.Reports
             => dto != null ?
                 Report.Make(
                     dto.Id,
-                    dto.Title,
+                    (ReportTitle)dto.Title,
                     dto.Description,
-                    dto.Shortcut,
+                    (ReportShortcut)dto.Shortcut,
                     dto.Color.FromDto(),
                     dto.AverageDuration,
                     dto.CreateTime,

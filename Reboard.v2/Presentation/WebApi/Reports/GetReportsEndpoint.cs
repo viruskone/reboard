@@ -1,7 +1,9 @@
 ﻿using Ardalis.ApiEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Reboard.Core.Application.Reports.GetReports;
+using Reboard.Presentation.WebApi.Users;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,21 +11,26 @@ using System.Threading.Tasks;
 namespace Reboard.Presentation.WebApi.Reports
 {
     [Route(Routes.ReportsRoute)]
+    [Authorize]
     public class GetReportsEndpoint : BaseAsyncEndpoint
-        .WithRequest<GetReportsQuery>
+        .WithoutRequest
         .WithResponse<IEnumerable<ReportDto>>
     {
         private readonly IMediator _mediator;
+        private readonly IUserAccessor _userAccessor;
 
-        public GetReportsEndpoint(IMediator mediator)
+        public GetReportsEndpoint(IMediator mediator, IUserAccessor userAccessor)
         {
             _mediator = mediator;
+            _userAccessor = userAccessor;
         }
 
         [HttpGet]
-        public override async Task<ActionResult<IEnumerable<ReportDto>>> HandleAsync(GetReportsQuery request, CancellationToken cancellationToken = default)
+        public override async Task<ActionResult<IEnumerable<ReportDto>>> HandleAsync(CancellationToken cancellationToken = default)
         {
-            var query = new GetReportsQuery(request.UserId, request.CompanyId);
+            var user = _userAccessor.Get();
+            if (user == null) return Unauthorized();
+            var query = new GetReportsQuery(user.UserId, user.CompanyId);
             return Ok(await _mediator.Send(query));
         }
     }

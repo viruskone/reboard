@@ -21,9 +21,9 @@ namespace Reboard.Core.Application.Reports.CreateReport
         public async Task<Unit> Handle(CreateReportCommand request, CancellationToken cancellationToken)
         {
             var report = Report.CreateNew(
-                request.Title,
+                (ReportTitle)request.Title,
                 request.Description,
-                request.Shortcut,
+                (ReportShortcut)request.Shortcut,
                 Color.Make(request.Color.Red, request.Color.Green, request.Color.Blue),
                 _checker
             );

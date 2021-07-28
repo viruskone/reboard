@@ -4,6 +4,7 @@ using Reboard.Core.Application.Colors;
 using Reboard.Core.Application.Reports;
 using Reboard.Core.Application.Reports.CreateReport;
 using Reboard.Core.Domain.Reports;
+using Reboard.Core.Domain.Shared;
 using Reboard.Core.Domain.Users;
 using Reboard.Core.Domain.Users.OutboundServices;
 using Reboard.Presentation.Cmd.CmdBase;

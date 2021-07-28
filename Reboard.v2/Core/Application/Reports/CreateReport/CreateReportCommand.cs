@@ -13,7 +13,7 @@ namespace Reboard.Core.Application.Reports.CreateReport
         public Guid[] AllowedUsers { get; }
         public ColorDto Color { get; }
         public string Description { get; }
-        public ReportShortcut Shortcut { get; }
+        public string Shortcut { get; }
         public string Title { get; }
 
         public CreateReportCommand(string title, string description, string shortcut, ColorDto color, Guid[] allowedUsers, Guid[] allowedCompanies)
