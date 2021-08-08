@@ -7,7 +7,7 @@ import { LOGIN_WRONG_CREDENTIALS, FETCH_ERROR } from "../constants/errors"
 export function login(login, password) {
   return function(dispatch) {
     dispatch({ type: types.LOGIN_REQUEST });
-    fetchCommand("http://localhost:5000/api/auth", {
+    fetchCommand("http://localhost:5000/api/users/authenticate", {
       method: "POST",
       body: JSON.stringify({ login, password }),
       headers: {

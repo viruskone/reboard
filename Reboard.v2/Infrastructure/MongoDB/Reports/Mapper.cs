@@ -1,4 +1,6 @@
-﻿using Reboard.Core.Domain.Reports;
+﻿using System;
+using System.Linq;
+using Reboard.Core.Domain.Reports;
 using Reboard.Core.Domain.Shared;
 
 namespace Reboard.Infrastructure.MongoDB.Reports
@@ -15,7 +17,9 @@ namespace Reboard.Infrastructure.MongoDB.Reports
                     dto.Color.FromDto(),
                     dto.AverageDuration,
                     dto.CreateTime,
-                    dto.Downloads
+                    dto.Downloads,
+                    dto.AllowedUsers.Select(d => (UserId)d).ToArray(),
+                    dto.AllowedCompanies.Select(d => (CompanyId)d).ToArray()
                     ) :
                 null;
 
@@ -42,7 +46,9 @@ namespace Reboard.Infrastructure.MongoDB.Reports
                     Color = report.Color.ToDto(),
                     AverageDuration = report.AverageGenerationTime,
                     CreateTime = report.CreateTime,
-                    Downloads = report.DownloadTimes
+                    Downloads = report.DownloadTimes,
+                    AllowedCompanies = report.AllowedCompanies.Select(d => (Guid)d).ToArray(),
+                    AllowedUsers = report.AllowedUsers.Select(d => (Guid)d).ToArray()
                 };
     }
 }

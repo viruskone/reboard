@@ -32,7 +32,18 @@ namespace Reboard.Core.Domain.Reports
             Id = Guid.NewGuid();
         }
 
-        private Report(Guid id, ReportTitle title, string description, ReportShortcut shortcut, Color color, TimeSpan averageDuration, DateTime createTime, int downloads)
+        private Report(
+            Guid id,
+            ReportTitle title,
+            string description,
+            ReportShortcut shortcut,
+            Color color,
+            TimeSpan averageDuration,
+            DateTime createTime,
+            int downloads,
+            UserId[] allowedUsers,
+            CompanyId[] allowedCompanies
+            )
         {
             Id = id;
             Title = title;
@@ -42,6 +53,8 @@ namespace Reboard.Core.Domain.Reports
             AverageGenerationTime = averageDuration;
             CreateTime = createTime;
             DownloadTimes = downloads;
+            _allowedUsers = new List<UserId>(allowedUsers);
+            _allowedCompanies = new List<CompanyId>(allowedCompanies);
         }
 
         public static Report CreateNew(ReportTitle title, string description, ReportShortcut shortcut, Color color, IReportUniqueTitleChecker checker)
@@ -50,7 +63,18 @@ namespace Reboard.Core.Domain.Reports
             return new Report(title, description, shortcut, color);
         }
 
-        public static Report Make(Guid id, ReportTitle title, string description, ReportShortcut shortcut, Color color, TimeSpan averageDuration, DateTime createTime, int downloads)
+        public static Report Make(
+            Guid id,
+            ReportTitle title,
+            string description,
+            ReportShortcut shortcut,
+            Color color,
+            TimeSpan averageDuration,
+            DateTime createTime,
+            int downloads,
+            UserId[] allowedUsers,
+            CompanyId[] allowedCompanies
+            )
             => new Report(
                 id,
                 title,
@@ -59,7 +83,30 @@ namespace Reboard.Core.Domain.Reports
                 color,
                 averageDuration,
                 createTime,
-                downloads);
+                downloads,
+                allowedUsers,
+                allowedCompanies);
+
+        public static Report Make(
+            Guid id,
+            ReportTitle title,
+            string description,
+            ReportShortcut shortcut,
+            Color color,
+            TimeSpan averageDuration,
+            DateTime createTime,
+            int downloads)
+            => new Report(
+                id,
+                title,
+                description,
+                shortcut,
+                color,
+                averageDuration,
+                createTime,
+                downloads,
+                new UserId[0],
+                new CompanyId[0]);
 
         public void AllowAllCompanyUsers(CompanyId companyId)
         {

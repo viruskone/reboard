@@ -8,7 +8,7 @@ export default function reportsReducer(state = initialState.reports, action) {
       return Object.assign({}, state, {
         list: action.payload.map(report => Object.assign({}, report, {
           key: report.id,
-          averageDuration: toSeconds(report.averageDuration) * 1000,
+          averageDuration: toSeconds(report.averageGenerationTime) * 1000,
           tags: []
         }))
       });

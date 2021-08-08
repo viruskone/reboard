@@ -20,8 +20,10 @@ using Reboard.Infrastructure.MongoDB;
 using Reboard.Presentation.WebApi.Exceptions;
 using Reboard.Presentation.WebApi.Options;
 using Reboard.Presentation.WebApi.Users;
+using Reboard.Presentation.WebApi.Infrastructure;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Reboard.Presentation.WebApi
 {
@@ -81,7 +83,12 @@ namespace Reboard.Presentation.WebApi
                             .WithExposedHeaders("Location");
                     });
                 });
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpanToStringConverter());
+                });
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
 

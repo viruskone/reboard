@@ -69,10 +69,10 @@ namespace Reports
         {
             if (string.IsNullOrWhiteSpace(forCompanies)) return new CompanyId[0];
             var companies = forCompanies.Split(",").Select(s => s.Trim());
-            var tasks = companies.Select(async companyName =>
-                await _userRepository.GetCompany((CompanyName)companyName));
+            var tasks = companies.Select(companyName =>
+                 _userRepository.GetCompany((CompanyName)companyName));
             await Task.WhenAll(tasks);
-            return tasks.Select(t => t.Result.Id);
+            return tasks.Select(t => t.Result.Id).ToList();
         }
 
         private async Task<IEnumerable<UserId>> GetUserIds(string forUser)
