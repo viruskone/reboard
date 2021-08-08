@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Reboard.Presentation.WebApi</AssemblyName>
+    <RootNamespace>Reboard.Presentation.WebApi</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Ardalis.ApiEndpoints" Version="3.1.0" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="5.4.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Application\Identity\Identity.csproj" />
+    <ProjectReference Include="..\..\Core\Application\Reports\Reports.csproj" />
+    <ProjectReference Include="..\..\Core\Application\Users\Users.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Identity\Identity.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\MongoDB\MongoDB.csproj" />
+  </ItemGroup>
+
+</Project>

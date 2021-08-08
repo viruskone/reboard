@@ -63,3 +63,6 @@ typings/
 .ionide
 .vscode
 .vs
+
+#NET 5
+*.cache
